@@ -1,3 +1,5 @@
 # jiemingyou.github.io
 
-Personal webpage, available at [jieming.me](https://jieming.me)
+Webpage for personal projects built with [Quarto](https://quarto.org).
+
+### Redirects to [jieming.me](https://jieming.me)
