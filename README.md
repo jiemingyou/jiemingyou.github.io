@@ -1,3 +1,3 @@
-# jieming.me
+# jiemingyou.github.io
 
-Personal webpage
+Personal webpage, available at [jieming.me](jieming.me)
