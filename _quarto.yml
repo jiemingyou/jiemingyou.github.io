@@ -4,17 +4,28 @@ project:
 
 website:
   title: "Jieming You"
+
   navbar:
-    title: "jieming.me"
-    background: "light"
+    title: false
+    background: primary
+    collapse: false
     left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+      - text: Home
+        href: index.qmd
+      - text: Photography
+        href: http://jieming.portfoliobox.net
+
+    right:
+      - icon: instagram
+        href: https://www.instagram.com/jiemingy/
+      - icon: github
+        href: https://github.com/jiemingyou
+      - icon: linkedin
+        href: http://linkedin.com/in/jiemingy/
 
 format:
   html:
-    theme: flatly
+    theme: cosmos
     css: styles.css
     toc: true
 

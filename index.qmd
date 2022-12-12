@@ -1,7 +1,9 @@
 ---
 title: Jieming You
+image: assets/profile.png
 about:
-    template: jolla 
+    template: jolla
+    image-width: 200px
 ---
 
-Coming soon.
+Work in Progress
