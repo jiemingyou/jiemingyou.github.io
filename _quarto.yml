@@ -1,0 +1,23 @@
+project:
+  type: website
+  output-dir: docs
+
+website:
+  title: "Jieming You"
+  navbar:
+    title: false
+    background: "light"
+    left:
+      - href: index.qmd
+        text: Home
+      - about.qmd
+
+format:
+  html:
+    theme: flatly
+    css: styles.css
+    mainfont: Helvetica
+    toc: true
+
+
+
