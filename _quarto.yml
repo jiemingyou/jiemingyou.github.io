@@ -5,7 +5,7 @@ project:
 website:
   title: "Jieming You"
   navbar:
-    title: false
+    title: "jieming.me"
     background: "light"
     left:
       - href: index.qmd
@@ -16,7 +16,6 @@ format:
   html:
     theme: flatly
     css: styles.css
-    mainfont: Helvetica
     toc: true
 
 

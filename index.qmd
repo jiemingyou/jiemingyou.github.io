@@ -1,5 +1,7 @@
 ---
-title: "Jieming You"
+title: Jieming You
+about:
+    template: jolla 
 ---
 
 Coming soon.
