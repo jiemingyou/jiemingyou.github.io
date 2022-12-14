@@ -7,13 +7,14 @@ website:
 
   navbar:
     title: false
-    background: primary
+    background: light
+    foreground: dark
     collapse: false
     left:
-      - text: Home
+      - text: Jieming You
         href: index.qmd
-      - text: Photography
-        href: http://jieming.portfoliobox.net
+      #- text: Photography
+      #  href: http://jieming.portfoliobox.net
 
     right:
       - icon: instagram

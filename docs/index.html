@@ -33,6 +33,7 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
 <link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
 <link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
 <script src="site_libs/bootstrap/bootstrap.min.js"></script>
@@ -70,10 +71,7 @@ ul.task-list li input[type="checkbox"] {
       <div class="navbar-container container-fluid">
           <ul class="navbar-nav navbar-nav-scroll me-auto">
   <li class="nav-item">
-    <a class="nav-link active" href="./index.html" aria-current="page">Home</a>
-  </li>  
-  <li class="nav-item">
-    <a class="nav-link" href="http://jieming.portfoliobox.net">Photography</a>
+    <a class="nav-link active" href="./index.html" aria-current="page">Jieming You</a>
   </li>  
 </ul>
           <ul class="navbar-nav navbar-nav-scroll ms-auto">
@@ -103,22 +101,36 @@ ul.task-list li input[type="checkbox"] {
 <!-- margin-sidebar -->
     
 <!-- main -->
-<div class="quarto-about-jolla">
-  <img src="assets/profile.png" class="about-image
-  round " style="height: 200px; width: 200px;">
- <header id="title-block-header" class="quarto-title-block default">
-<div class="quarto-title">
-<h1 class="title">Jieming You</h1>
-</div>
-<div class="quarto-title-meta">
-  </div>
-</header><main class="content" id="quarto-document-content">
-<p>Work in Progress</p>
+<main class="content" id="quarto-document-content">
 
 
-</main>  
+
+<div class="grid">
+<div class="profile-photo g-col-12 g-col-md-6">
+<p><img src="assets/profile.png" class="img-fluid"></p>
 </div>
- <!-- /main -->
+<section id="hi-there" class="level2 g-col-12 g-col-md-6">
+<h2 class="anchored" data-anchor-id="hi-there">Hi there! 👋</h2>
+<p>I’m <span style="color: RoyalBlue;"><strong>Jieming You</strong></span>, an undergraduate IEM (Industrial Engineering and Management) student at Aalto University.</p>
+<p>On this website, I will store and document my personal projects mainly related to programming and stats. You can find my photography portfolio on <a href="https://jieming.portfoliobox.net">Portfoliobox</a>.</p>
+<p><br>
+</p>
+</section>
+</div>
+<div class="grid">
+<section id="experience" class="level1 g-col-12 g-col-md-6">
+<h1>Experience</h1>
+<p>Coming…</p>
+</section>
+<section id="projects" class="level1 g-col-12 g-col-md-6">
+<h1>Projects</h1>
+<p>Work in Progress…</p>
+</section>
+</div>
+
+
+
+</main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
 window.document.addEventListener("DOMContentLoaded", function (event) {
   const toggleBodyColorMode = (bsSheetEl) => {
@@ -139,6 +151,13 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     }
   }
   toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
   const clipboard = new window.ClipboardJS('.code-copy-button', {
     target: function(trigger) {
       return trigger.previousElementSibling;

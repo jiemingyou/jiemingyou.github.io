@@ -1,9 +1,39 @@
 ---
-title: Jieming You
-image: assets/profile.png
-about:
-    template: jolla
-    image-width: 200px
+toc: false
+
 ---
 
-Work in Progress
+
+::: {.grid}
+
+::: {.profile-photo .g-col-12 .g-col-md-6}
+![](assets/profile.png)
+:::
+
+::: {.g-col-12 .g-col-md-6}
+## Hi there! 👋
+
+I'm [**Jieming You**]{style="color: RoyalBlue;"}, an undergraduate IEM (Industrial Engineering and Management) student at Aalto University.
+
+On this website, I will store and document my personal projects mainly related to programming and stats. You can find my photography portfolio on [Portfoliobox](https://jieming.portfoliobox.net).
+
+\
+:::
+
+:::
+
+::: {.grid}
+
+::: {.g-col-12 .g-col-md-6}
+# Experience
+
+Coming...
+:::
+
+::: {.g-col-12 .g-col-md-6}
+# Projects
+
+Work in Progress...
+:::
+
+:::
