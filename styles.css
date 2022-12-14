@@ -2,5 +2,6 @@
 .profile-photo {
     display: flex;
     align-items: center;
-    width: 300px;
+    width: 250px;
+    padding: 25px 25px 25px 25px;
 }
