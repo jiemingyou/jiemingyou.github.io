@@ -1,7 +1,9 @@
 /* css styles */
 .profile-photo {
+    margin-left: auto;
+    margin-right: auto;
     display: flex;
     align-items: center;
-    width: 250px;
-    padding-right: 25px;
+    width: 300px;
+    padding-right: 15px;
 }
