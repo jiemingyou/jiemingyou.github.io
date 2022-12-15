@@ -7,3 +7,30 @@
     width: 300px;
     padding-right: 15px;
 }
+
+.project {
+    position: relative;
+    display: block;
+
+    border-style: solid;
+    border-color: rgb(241, 241, 241);
+    border-width: 2px;
+    border-radius: 20px;
+
+    box-shadow: 0 5px 10px 0 rgba(123, 123, 123, 0.2);
+    transition: 0.1s;
+
+    height: 230px;
+    padding: 15px;
+    margin-bottom: 10px;
+}
+
+.project:hover {
+    box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+
+}
+
+.centertitle {
+    text-align: center;
+    margin-bottom: 40px;
+}
