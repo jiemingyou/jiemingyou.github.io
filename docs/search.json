@@ -1,16 +1,37 @@
 [
   {
+    "objectID": "sahkonyt.html",
+    "href": "sahkonyt.html",
+    "title": "Sähkö Nyt",
+    "section": "",
+    "text": "Coming soon! ⚡️"
+  },
+  {
+    "objectID": "convolution.html",
+    "href": "convolution.html",
+    "title": "Kernel convolutions",
+    "section": "",
+    "text": "Site work in progress…"
+  },
+  {
     "objectID": "index.html",
     "href": "index.html",
     "title": "Jieming You",
     "section": "",
-    "text": "Latest projects\n\n\nSähkö Nyt\nElectricity price monitoring app for IOS developed entirely using Swift and SwiftUI. Launching early 2023.\n\n\nSanajahti Solver\nDepth-first search algorithm implementation using Python for solving Sanajahti-game. Web-app built using Flask.\n\n\nLinear Gaussian Model on Global Warming\nUsing hierarchical Bayesian model to assess the global warming trend. Using R and Stan for the HMC simulation.\n\n\nKernel Convolution study\nUsing simple kernel convolutions to apply e.g., Gaussian Blur on images. Implemented using base R."
+    "text": "Latest projects\n\n\nSähkö Nyt\nElectricity price monitoring app for iOS developed entirely with Swift and SwiftUI. Launching early 2023.\n\n\nSanajahti Solver\nDepth-first search algorithm implementation using Python for solving Sanajahti-game. Web-app built using Flask.\n\n\nGlobal Warming analysis\nBayesian Statistics project analysing the global warming trend. HMC (MCMC) simulation written in R and Stan.\n\n\nKernel Convolution study\nUsing simple kernel convolutions to apply e.g., Gaussian Blur on images. Implemented using base R."
   },
   {
-    "objectID": "about.html",
-    "href": "about.html",
-    "title": "About",
+    "objectID": "sanajahti.html",
+    "href": "sanajahti.html",
+    "title": "Sanajahti Solver",
     "section": "",
-    "text": "About this site"
+    "text": "Site work in progress…"
+  },
+  {
+    "objectID": "bayesian.html",
+    "href": "bayesian.html",
+    "title": "Bayesian project",
+    "section": "",
+    "text": "Site work in progress…"
   }
 ]

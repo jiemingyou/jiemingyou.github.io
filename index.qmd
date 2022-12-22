@@ -15,25 +15,34 @@ toc: false
 
 I'm [**Jieming You**]{style="color: RoyalBlue;"}, an undergraduate IEM (Industrial Engineering and Management) student at Aalto University.
 
-On this website, I will store and document my personal projects mainly related to programming and stats. You can find my photography portfolio on [Portfoliobox](https://jieming.portfoliobox.net).
-
-\
-:::
+This website is for archiving and documenting my personal projects mainly related to programming. You can find my photography work on [**Portfoliobox**](https://jieming.portfoliobox.net).
 
 :::
+
+:::
+
+# Latest projects {.centertitle}
 
 ::: {.grid}
 
-::: {.g-col-12 .g-col-md-6}
-# Experience
-
-Coming...
+::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/sahkonyt.html'}
+### Sähkö Nyt
+Electricity price monitoring app for iOS developed entirely with ```Swift``` and ```SwiftUI```. Launching early 2023.
 :::
 
-::: {.g-col-12 .g-col-md-6}
-# Projects
+::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/sanajahti.html'}
+### Sanajahti Solver
+Depth-first search algorithm implementation using ```Python``` for solving Sanajahti-game. Web-app built using ```Flask```.
+:::
 
-Work in Progress...
+::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/bayesian.html'}
+### Global Warming analysis
+```Bayesian Statistics``` project analysing the global warming trend. HMC (MCMC) simulation written in ```R``` and [```Stan```](https://mc-stan.org).
+:::
+
+::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/convolution.html'}
+### Kernel Convolution study
+Using simple kernel convolutions to apply e.g., Gaussian Blur on images. Implemented using base ```R```. 
 :::
 
 :::

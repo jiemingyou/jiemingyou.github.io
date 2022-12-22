@@ -6,13 +6,13 @@ website:
   title: "Jieming You"
 
   navbar:
-    title: false
+    title: Jieming You
     background: light
     foreground: dark
     collapse: false
-    left:
-      - text: Jieming You
-        href: index.qmd
+    #left:
+      #- text: Jieming You
+      #  href: index.qmd
       #- text: Photography
       #  href: http://jieming.portfoliobox.net
 

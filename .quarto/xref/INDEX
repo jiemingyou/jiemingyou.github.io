@@ -4,5 +4,17 @@
   },
   "about.qmd": {
     "about.html": "031f4192"
+  },
+  "sahkonyt.qmd": {
+    "sahkonyt.html": "e8353b91"
+  },
+  "convolution.qmd": {
+    "convolution.html": "7cf1bf87"
+  },
+  "sanajahti.qmd": {
+    "sanajahti.html": "c4c6178a"
+  },
+  "bayesian.qmd": {
+    "bayesian.html": "44b50c97"
   }
 }
