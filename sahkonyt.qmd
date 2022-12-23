@@ -1,5 +1,2 @@
----
-title: "Sähkö Nyt"
----
 
-Coming soon! ⚡️
+![](assets/sahkonyt.png){fig-align="center"}

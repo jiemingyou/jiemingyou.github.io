@@ -11,7 +11,7 @@ toc: false
 :::
 
 ::: {.g-col-12 .g-col-md-6}
-## Hi there! 👋
+## Hi there! [👋]{.waving-hand}
 
 I'm [**Jieming You**]{style="color: RoyalBlue;"}, an undergraduate IEM (Industrial Engineering and Management) student at Aalto University.
 
