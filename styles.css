@@ -33,7 +33,7 @@
 .centertitle {
     text-align: center;
     margin-bottom: 40px;
-    margin-top: 50px;
+    margin-top: 100px;
 }
 
 
@@ -56,4 +56,14 @@
     70% { transform: rotate( 0.0deg) } 
     /* Reset for the last half to pause */
     100% { transform: rotate( 0.0deg) }
+}
+
+.desc {
+    text-align: left;
+}
+
+.logo {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
 }
