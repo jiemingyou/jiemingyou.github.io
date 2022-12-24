@@ -1,5 +1,153 @@
 ---
 title: "Kernel convolutions"
+date: 21/10/2022
+bibliography: references.bib
 ---
 
-Site work in progress...
+Applying convolution matrices for blurring images. Convolutions and matrices calculated using base ```R```.
+
+```{r output=FALSE}
+library(jpeg)
+set.seed(123)
+```
+
+### Loading the image
+Reading the image from a ```jpg``` file into a raster array. The image is loaded into an array of ```(500, 500, 3)```.
+
+```{r}
+# Reading the sample image
+img <- readJPEG("assets/wall.jpg", native = FALSE)
+dim(img)
+```
+
+Plotting the the raster image.
+
+```{r}
+#| fig-cap: Original photo
+# Setting up the plotting area
+par(mfrow = c(1,1), mar = c(1,1,1,1))
+
+# Plotting the array
+plot.new()
+as.raster(img) |>
+  rasterImage(xleft = 0, xright = 1, ytop = 0, ybottom = 1)
+```
+
+### 2-D Gaussian kernel
+
+Gaussian blur can be applied by running a convolution using a Gaussian kernel. The two-dimensional Guaissian kernel is defined as 
+$$
+G(x,y) = \frac{1}{2 \pi \sigma ^2} e^{- \frac{x^2 + y^2}{2 \sigma ^2}}
+$$
+
+Using the CDF of normal distribution, we can calculate the convolution matrix by
+
+1. Generating a linspace $u = \texttt{linspace}[\texttt{a}, \texttt{b}] \in \mathbb{R}^n$
+
+2. Using $u$ to draw values from the Gaussian $\texttt{CDF}$
+
+3. Calculating the convolution matrix $M$ by taking the outer product $M = uu^\top \in \mathbb{R}^{n \times n}$
+
+```{r}
+# Gaussian kernel function
+gaussian_kernel <- function(width, sigma = 1) {
+    if (width%%2 != 1) { stop("Even width parameter") }
+
+    # Boundaries
+    b  <- (width-1)/2
+    a <- -b
+    
+    # Setting up the linspace
+    ax <- seq(a, b, length = width)
+
+    # Draw from gaussian CDF
+    u <- dnorm(ax, sd = sigma)
+
+    # Outer product uu^T and normalization
+    M <- u %o% u
+    M <- M / sum(M)
+
+    return(M)
+}
+```
+
+Plotting an example convolution matrix using ```width = 81``` and ```sigma = 10```.
+
+```{r}
+#| code-fold: true
+#| code-summary: "Calculating color values for the plot"
+# Modified from: https://stackoverflow.com/a/39118422
+z <- gaussian_kernel(width = 81, sigma = 10)
+colors <- colorRampPalette(c("green", "yellow", "red"))(100)
+
+z.facet.range <- ((z[-1, -1] +
+                   z[-1, -ncol(z)] +
+                   z[-nrow(z), -1] +
+                   z[-nrow(z), -ncol(z)]) / 4) |>
+                
+                cut(100)
+```
+
+```{r}
+#| fig-cap: 3-D representation of the 2-D gaussian convolution
+# Preparing the variables
+M <- gaussian_kernel(width = 81, sigma = 10)
+x <- y <- seq(-40, 40, length = 81)
+
+# Plotting the 3D surface
+par(mfrow = c(1,1), mar = c(1,1,1,1))
+persp(x, y, M,
+    theta = 135, phi = 30,
+    zlab = "density",
+    col = colors[z.facet.range]
+)
+```
+
+### Extended edge padding
+
+In order to calculate convolutions for the edge pixels, we can extend the edges by repeating edge values indefinitely.
+
+```{r out.width="150px"}
+#| echo: false
+#| fig-cap: Padding edge pixels by extension [@michael].
+url <- "https://upload.wikimedia.org/wikipedia/commons/4/4f/Extend_Edge-Handling.png"
+knitr::include_graphics(url)
+```
+
+The following function repeats the edge pixels of a given matrix for a specified mount of times.
+
+```{r}
+edge_extension <- function(mat, pad) {
+    n <- nrow(mat)
+    m <- ncol(mat)
+
+    top   <- c(rep(mat[1,1], pad), mat[1,], rep(mat[1,m], pad))
+    bot   <- c(rep(mat[n,1], pad), mat[n,], rep(mat[n,m], pad))
+    left  <- matrix(rep(mat[1:n, 1], pad), ncol=pad)
+    right <- matrix(rep(mat[1:n, m], pad), ncol=pad)
+    mid   <- cbind(left, mat[1:n,], right)
+
+    new_mat <- rbind(
+        matrix(rep(top, pad), nrow=pad, byrow=TRUE),
+        mid,
+        matrix(rep(bot, pad), nrow=pad, byrow=TRUE)
+    )
+    
+    return(new_mat)
+}
+```
+
+The function in action
+```{r}
+edge_extension(matrix(1:9, ncol=3, byrow=T), pad=2) |>
+  write.table(row.names=F, col.names=F)
+```
+
+### Gaussian blurring
+
+### References
+
+::: {#refs}
+:::
+
+
