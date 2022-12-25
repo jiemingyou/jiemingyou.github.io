@@ -4,7 +4,9 @@ date: 21/10/2022
 bibliography: references.bib
 ---
 
-Applying convolution matrices for blurring images. Convolutions and matrices calculated using base ```R```.
+Applying convolution matrices to rasters. Convolutions and matrices calculated using base ```R```. 
+
+
 
 ```{r output=FALSE}
 library(jpeg)
@@ -22,15 +24,149 @@ dim(img)
 
 Plotting the the raster image.
 
+```{r filename="plotting function"}
+plot_raster <- function(raster) {
+  par(mfrow = c(1,1), mar = c(1,1,1,1))
+  plot.new()
+  as.raster(raster) |>
+    rasterImage(xleft = 0, xright = 1, ytop = 0, ybottom = 1)
+}
+```
+
 ```{r}
 #| fig-cap: Original photo
-# Setting up the plotting area
-par(mfrow = c(1,1), mar = c(1,1,1,1))
+plot_raster(img)
+```
 
-# Plotting the array
-plot.new()
-as.raster(img) |>
-  rasterImage(xleft = 0, xright = 1, ytop = 0, ybottom = 1)
+
+### Convolving kernel
+
+The convolution can be expressed as 
+$$
+g(x,y) = M * f(x,y) = \sum_{dx=-a}^{a} \sum_{dy=-b}^{b} M(dx, dy) f(x-dx, y-dy)
+$$
+
+That is, we calculate a new value for each pixel using the product of the convolution kernel and matrix of the same dimension from array f, in a rolling basis. 
+
+However, the edge pixels might cause problems when using a large kernel, as there are no adjacent pixels. This can be handled by edge padding.
+
+#### Extended edge padding
+
+In order to calculate convolutions also for the edge pixels, we can extend the edges by repeating edge values indefinitely.
+
+```{r out.width="150px"}
+#| echo: false
+#| fig-cap: Padding edge pixels by extension [@michael].
+url <- "https://upload.wikimedia.org/wikipedia/commons/4/4f/Extend_Edge-Handling.png"
+knitr::include_graphics(url)
+```
+
+The following function repeats the edge pixels of a given matrix for a specified mount of times.
+
+```{r}
+edge_extension <- function(mat, pad) {
+    n <- nrow(mat)
+    m <- ncol(mat)
+
+    top   <- c(rep(mat[1,1], pad), mat[1,], rep(mat[1,m], pad))
+    bot   <- c(rep(mat[n,1], pad), mat[n,], rep(mat[n,m], pad))
+    left  <- matrix(rep(mat[1:n, 1], pad), ncol=pad)
+    right <- matrix(rep(mat[1:n, m], pad), ncol=pad)
+    mid   <- cbind(left, mat[1:n,], right)
+
+    new_mat <- rbind(
+        matrix(rep(top, pad), nrow=pad, byrow=TRUE),
+        mid,
+        matrix(rep(bot, pad), nrow=pad, byrow=TRUE)
+    )
+    
+    return(new_mat)
+}
+```
+
+The function in action when given a following ```3x3``` matrix as input
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9 
+\end{bmatrix}
+$$
+
+```{r}
+edge_extension(matrix(1:9, ncol=3, byrow=T), pad=2) |>
+  write.table(row.names=F, col.names=F)
+```
+
+#### Applying the function
+
+The following function calculates the rolling kernel using edge extension
+
+```{r}
+rolling_kernel <- function(f, M) {
+  
+  x <- ncol(f)
+  y <- nrow(f)
+  m <- ncol(M)
+  n <- nrow(M)
+  g <- f # g(x,y)
+  
+  # Kernel dimensions exceed the source
+  if (m > x ||  n  > y) {
+    stop("Kernel length exceeds the source")
+  }
+  
+  g_extended <- edge_extension(f, (m-1))
+  
+  for (i in 1:x) {
+    for (j in 1:y) {
+      f_kernel <- g_extended[i:(i+(m-1)), j:(j+(n-1))]
+      g_kernel <- f_kernel * M
+      g[i, j] <- sum(g_kernel)
+    }
+  }
+
+  return(g)
+}
+```
+
+A main wrapper function that convolves the given kernel for all three channels of an RGB-image. We have to also scale the values into ```[0,1]``` by computing $\frac{\mathrm{rank}(A_{m \times n})}{m \cdot n}$
+
+```{r}
+rgb_kernel <- function(raster, kernel) {
+  channels <- dim(raster)[3]
+  output <- raster
+
+  for (ch in 1:channels) {
+    output[,,ch] <- rolling_kernel(raster[,,ch], kernel)
+  }
+
+  # Scaling
+  output_reshape <- matrix(output, nrow = ncol(raster))
+  output_scaled  <- rank(output_reshape) / length(output_reshape)
+  dim(output_scaled) <- c(dim(raster))
+  
+  return(output_scaled)
+}
+````
+
+#### Testing out common kernels
+
+```{r}
+# Sharpen
+img |>
+  rgb_kernel(matrix(c(0,-1,0,-1,5,-1,0,-1,0), nrow=3)) |>
+  plot_raster()
+
+# Edge detection  
+img |>
+  rgb_kernel(matrix(c(-1,-1,-1,-1,8,-1,-1,-1,-1), nrow=3)) |>
+  plot_raster()
+
+# Box blur
+img |>
+  rgb_kernel(matrix(rep(1, 81), nrow=9)) |>
+  plot_raster()
 ```
 
 ### 2-D Gaussian kernel
@@ -103,47 +239,18 @@ persp(x, y, M,
 )
 ```
 
-### Extended edge padding
-
-In order to calculate convolutions for the edge pixels, we can extend the edges by repeating edge values indefinitely.
-
-```{r out.width="150px"}
-#| echo: false
-#| fig-cap: Padding edge pixels by extension [@michael].
-url <- "https://upload.wikimedia.org/wikipedia/commons/4/4f/Extend_Edge-Handling.png"
-knitr::include_graphics(url)
-```
-
-The following function repeats the edge pixels of a given matrix for a specified mount of times.
-
-```{r}
-edge_extension <- function(mat, pad) {
-    n <- nrow(mat)
-    m <- ncol(mat)
-
-    top   <- c(rep(mat[1,1], pad), mat[1,], rep(mat[1,m], pad))
-    bot   <- c(rep(mat[n,1], pad), mat[n,], rep(mat[n,m], pad))
-    left  <- matrix(rep(mat[1:n, 1], pad), ncol=pad)
-    right <- matrix(rep(mat[1:n, m], pad), ncol=pad)
-    mid   <- cbind(left, mat[1:n,], right)
-
-    new_mat <- rbind(
-        matrix(rep(top, pad), nrow=pad, byrow=TRUE),
-        mid,
-        matrix(rep(bot, pad), nrow=pad, byrow=TRUE)
-    )
-    
-    return(new_mat)
-}
-```
-
-The function in action
-```{r}
-edge_extension(matrix(1:9, ncol=3, byrow=T), pad=2) |>
-  write.table(row.names=F, col.names=F)
-```
 
 ### Gaussian blurring
+
+Finally, convolving the gaussian kernel and applying a ```Gaussian Blur```of ```radius: 40``` and ```sd: 10```.
+
+```{r}
+#| fig-cap: Original image + gaussian blur
+# Gaussian blur
+img |>
+  rgb_kernel(gaussian_kernel(width = 81, sigma = 10)) |>
+  plot_raster()
+```
 
 ### References
 
