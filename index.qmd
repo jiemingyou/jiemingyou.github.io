@@ -41,8 +41,8 @@ Depth-first search algorithm implementation using ```Python``` for solving Sanaj
 :::
 
 ::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/convolution.html' onmouseover="" style="cursor: pointer;"}
-### Kernel Convolution study
-Using simple kernel convolutions to apply e.g., Gaussian Blur on images. Implemented using base ```R```. 
+### Kernel Convolutions
+Testing simple kernel convolutions and implementing a Gaussian Blur using base ```R```.
 :::
 
 :::
