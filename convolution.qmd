@@ -148,7 +148,7 @@ rgb_kernel <- function(raster, kernel) {
   
   return(output_scaled)
 }
-````
+```
 
 #### Testing out common kernels
 
