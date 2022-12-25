@@ -30,7 +30,7 @@ This website is for archiving and documenting my personal projects mainly relate
 Electricity price monitoring app for iOS developed entirely with ```Swift``` and ```SwiftUI```. Launching early 2023.
 :::
 
-::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/sanajahti.html' onmouseover="" style="cursor: pointer;"}
+::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://1gd7kf.deta.dev' onmouseover="" style="cursor: pointer;"}
 ### Sanajahti Solver
 Depth-first search algorithm implementation using ```Python``` for solving Sanajahti-game. Web-app built using ```Flask```.
 :::
