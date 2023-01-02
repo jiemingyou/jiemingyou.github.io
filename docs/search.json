@@ -11,7 +11,7 @@
     "href": "index.html",
     "title": "Jieming You",
     "section": "",
-    "text": "Latest projects\n\n\nSähkö Nyt\nElectricity price monitoring app for iOS developed entirely with Swift and SwiftUI. Launching early 2023.\n\n\nSanajahti Solver\nDepth-first search algorithm implementation using Python for solving Sanajahti-game. Web-app built using Flask.\n\n\nGlobal Warming analysis\nBayesian Statistics project analysing the global warming trend. HMC (MCMC) simulation written in R and Stan.\n\n\nKernel Convolutions\nTesting simple kernel convolutions and implementing a Gaussian Blur using base R.\n\n\n\n\nUniversity projects\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n\n\nMarket Research Strategy project conducted for Supermetrics. Research results and suggestions presented to the CEO.\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n\n\nOperations Management Operations optimization for Finnair Kitchen. We mapped the the current processes and designed a new set of KPI for the management.\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n\n\nMetro Optimization We aimed to increase Helsinki metro peak capacity by optimizing people flow using computer vision. Prototype presented to the HSL.\n\n\n\n\nOther stuff\n\n\nDeep Dive Case competition  1st place\nDeep tech Research-to-Business (R2B) case competition.\n\n\nOptiver TraderHack Hackathon  finalist\nAlgorithmic trading competition (Cross-Exchange Market Making)."
+    "text": "Latest projects\n\n\nSähkö Nyt\nElectricity price monitoring app for iOS developed using Swift and SwiftUI. Launching early 2023.\n\n\nSanajahti Solver\nDepth-first search algorithm implementation using Python for solving Sanajahti-game. Web-app built using Flask.\n\n\nGlobal Warming analysis\nBayesian stats project analysing the global warming trend using gaussian regressions. Markov Chain Monte Carlo simulations done in R and Stan.\n\n\nKernel Convolutions\nTesting kernel convolutions, edge extensions, and calculating a simple bayesian kernel using base R.\n\n\n\n\nUniversity projects\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n\n\nStrategy Project Strategy project & research conducted for Supermetrics. Research results and suggestions presented to the CEO.\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n\n\nOperations Management Operations optimization for Finnair Kitchen. We mapped the the current processes and designed a new set of KPI for the management.\n\n\n\n\n \n\n\n\n\n\n\n\n\n\n\n\nMetro Optimization We aimed to increase Helsinki metro peak capacity by optimizing people flow using computer vision. Prototype presented to the HSL.\n\n\n\n\nOther stuff\n\n\nDeep Dive Case competition  1st place\nDeep tech Research-to-Business (R2B) case competition.\n\n\nOptiver TraderHack Hackathon  finalist\nAlgorithmic trading competition (Cross-Exchange Market Making)."
   },
   {
     "objectID": "sanajahti.html",
@@ -26,12 +26,5 @@
     "title": "Bayesian project",
     "section": "",
     "text": "Site work in progress…"
-  },
-  {
-    "objectID": "convolution.html#loading-the-image",
-    "href": "convolution.html#loading-the-image",
-    "title": "Kernel convolutions",
-    "section": "Loading the image",
-    "text": "Loading the image\n500x500 pixels separated into three channels.\n\nimg <- readJPEG(\"assets/wall.jpg\", native = FALSE)\ndim(img)\n\n[1] 500 500   3"
   }
 ]
