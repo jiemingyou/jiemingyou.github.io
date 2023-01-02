@@ -15,7 +15,7 @@ toc: false
 
 I'm [**Jieming You**]{style="color: RoyalBlue;"}, an undergraduate IEM (Industrial Engineering and Management) student at Aalto University.
 
-This website is for archiving and documenting my personal projects mainly related to programming. You can find my photography work on [**Portfoliobox**](https://jieming.portfoliobox.net).
+This website is for archiving and documenting my personal projects mainly related to programming. You can find my photography work [**here**](https://jieming.portfoliobox.net).
 
 :::
 
@@ -27,7 +27,7 @@ This website is for archiving and documenting my personal projects mainly relate
 
 ::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/sahkonyt.html' onmouseover="" style="cursor: pointer;"}
 ### Sähkö Nyt
-Electricity price monitoring app for iOS developed entirely with ```Swift``` and ```SwiftUI```. Launching early 2023.
+Electricity price monitoring app for iOS developed using ```Swift``` and ```SwiftUI```. Launching early 2023.
 :::
 
 ::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://1gd7kf.deta.dev' onmouseover="" style="cursor: pointer;"}
@@ -37,12 +37,12 @@ Depth-first search algorithm implementation using ```Python``` for solving Sanaj
 
 ::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/bayesian.html' onmouseover="" style="cursor: pointer;"}
 ### Global Warming analysis
-```Bayesian Statistics``` project analysing the global warming trend. HMC (MCMC) simulation written in ```R``` and [```Stan```](https://mc-stan.org).
+Bayesian stats project analysing the global warming trend using gaussian regressions. Markov Chain Monte Carlo simulations done in ```R``` and [```Stan```](https://mc-stan.org).
 :::
 
 ::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/convolution.html' onmouseover="" style="cursor: pointer;"}
 ### Kernel Convolutions
-Testing simple kernel convolutions and implementing a Gaussian Blur using base ```R```.
+Testing kernel convolutions, edge extensions, and calculating a simple bayesian kernel using base ```R```.
 :::
 
 :::
@@ -59,8 +59,8 @@ knitr::include_graphics(url)
 :::
 
 ::: {.desc .g-col-6 .g-col-md-6}
-**Market Research**<br/>
-Strategy project conducted for Supermetrics. Research results and suggestions presented to the CEO.
+**Strategy Project**<br/>
+Strategy project & research conducted for Supermetrics. Research results and suggestions presented to the CEO.
 :::
 
 ::: {.g-col-6 .g-col-md-6 layout="[[-1], [1], [-1]]" onclick=location.href='https://www.finnair.com' onmouseover="" style="cursor: pointer;"}
@@ -94,18 +94,14 @@ using computer vision. Prototype presented to the HSL.
 
 ::: {.grid}
 
-::: {.project .g-col-6 .g-col-md-6 onclick=location.href='https://deep-dive-8f0636.webflow.io' onmouseover="" style="cursor: pointer;"}
+::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://deep-dive-8f0636.webflow.io' onmouseover="" style="cursor: pointer;"}
 #### Deep Dive Case competition <br/> [1st place]{style="color: RoyalBlue;"}
 Deep tech Research-to-Business (R2B) case competition.
 :::
 
-::: {.project .g-col-6 .g-col-md-6 onclick=location.href='https://optiver.com/competitions/traderhack2022/' onmouseover="" style="cursor: pointer;"}
+::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://optiver.com/competitions/traderhack2022/' onmouseover="" style="cursor: pointer;"}
 #### Optiver TraderHack Hackathon <br/> [finalist]{style="color: RoyalBlue;"}
 Algorithmic trading competition (Cross-Exchange Market Making).
 :::
 
 :::
-
-
-
-

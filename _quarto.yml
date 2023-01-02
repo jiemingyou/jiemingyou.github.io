@@ -4,6 +4,9 @@ project:
 
 website:
   title: "Jieming You"
+  page-footer:
+    center:
+      - text: "Made with Quarto and Pandoc<br>© 2023 Jieming You"
 
   navbar:
     title: Jieming You
