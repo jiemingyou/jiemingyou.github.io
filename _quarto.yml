@@ -26,7 +26,9 @@ website:
         href: https://github.com/jiemingyou
       - icon: linkedin
         href: http://linkedin.com/in/jiemingy/
-
+  
+  google-analytics: "G-SG7MFM798X"
+  
 format:
   html:
     theme: cosmos

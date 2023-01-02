@@ -1,5 +1,10 @@
 ---
 title: "Bayesian project"
+date: 11/12/2022
+author:   
+  - Aake Kesälä   
+  - Zechen Ma
+  - Jieming You
 ---
 
 Site work in progress...
