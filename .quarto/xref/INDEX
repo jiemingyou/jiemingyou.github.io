@@ -16,5 +16,8 @@
   },
   "bayesian.qmd": {
     "bayesian.html": "44b50c97"
+  },
+  "bayesian/bayesian.qmd": {
+    "bayesian.html": "2f6ed2f8"
   }
 }

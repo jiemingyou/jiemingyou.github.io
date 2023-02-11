@@ -42,7 +42,7 @@ Bayesian stats project analysing the global warming trend using gaussian regress
 
 ::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/convolution.html' onmouseover="" style="cursor: pointer;"}
 ### Kernel Convolutions
-Testing kernel convolutions, edge extensions, and calculating a simple bayesian kernel using base ```R```.
+Testing kernel convolutions, edge extensions, and calculating a simple gaussian kernel using base ```R```.
 :::
 
 :::
@@ -53,7 +53,7 @@ Testing kernel convolutions, edge extensions, and calculating a simple bayesian 
 ::: {.logo .g-col-6 .g-col-md-6 layout="[[-1], [1], [-1]]" onclick=location.href='https://supermetrics.com' onmouseover="" style="cursor: pointer;"}
 ```{r out.width="175px"}
 #| echo: false
-url <- "https://upload.wikimedia.org/wikipedia/fi/7/79/Supermetrics-logo.png"
+url <- "https://uploads-ssl.webflow.com/623c3edba43a0374cfff7308/633d358284c2264830b95685_New-SM-logo_Black-p-500.png"
 knitr::include_graphics(url)
 ```
 :::
