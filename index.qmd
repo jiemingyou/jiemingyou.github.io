@@ -1,6 +1,5 @@
 ---
 toc: false
-
 ---
 
 
@@ -35,7 +34,7 @@ Electricity price monitoring app for iOS developed using ```Swift``` and ```Swif
 Depth-first search algorithm implementation using ```Python``` for solving Sanajahti-game. Web-app built using ```Flask```.
 :::
 
-::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/bayesian.html' onmouseover="" style="cursor: pointer;"}
+::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/bayesian/bayesian.html' onmouseover="" style="cursor: pointer;"}
 ### Global Warming analysis
 Bayesian stats project analysing the global warming trend using gaussian regressions. Markov Chain Monte Carlo simulations done in ```R``` and [```Stan```](https://mc-stan.org).
 :::

@@ -1,6 +1,6 @@
 ---
 title: "Kernel convolutions"
-date: 21/10/2022
+date: 21.10.2022
 bibliography: references.bib
 ---
 

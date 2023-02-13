@@ -11,7 +11,7 @@
 <meta name="author" content="Jieming You">
 <meta name="dcterms.date" content="2022-11-12">
 
-<title>Jieming You - Bayesian project</title>
+<title>Jieming You - Predicting the rate of global warming</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -113,14 +113,20 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
 <main class="content" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Bayesian project</h1>
+<h1 class="title">Predicting the rate of global warming</h1>
 </div>
 
 
@@ -148,9 +154,14 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 
 </header>
 
-<p>Site work in progress…</p>
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>There has been, and still is, a lot of controversy about the presence and magnitude of climate change. According to many studies, earth’s temperature has been steadily rising due to different factors, such as increased global emissions and deforestation. These studies propose differing values for the rate of the warming. Based on a report of IPCC, human-induced warming is likely increasing the average temperatures between 0.1°C and 0.3°C per decade.</p>
+<p>The main analysis problem of this report is to find out the presence and the rate of global warming. We aim to model the global warming rate using Bayesian workflow. The analysis will be carried out using temperature observations gathered from 4 cities (Beijing, Helsinki, Los Angeles, Sydney) from a 25-year time span. We will fit three variants of the Gaussian linear model to average monthly temperatures of the four different locations. The goal is then to find an estimate for the slope of the linear model. As an example, the monthly data from Los Angeles is illustrated in Figure 1.</p>
+<p>First we will introduce the data, model, and priors that we are going to use. Then we will describe how we have run the model and conduct the convergence diagnostics, posterior predictive checks and sensitivity analysis. Lastly we will discuss the issues and improvements as well as final conclusions and self-reflection.</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">

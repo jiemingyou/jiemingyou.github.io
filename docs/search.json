@@ -23,8 +23,8 @@
   {
     "objectID": "bayesian/bayesian.html",
     "href": "bayesian/bayesian.html",
-    "title": "Bayesian project",
+    "title": "Predicting the rate of global warming",
     "section": "",
-    "text": "Site work in progress…"
+    "text": "There has been, and still is, a lot of controversy about the presence and magnitude of climate change. According to many studies, earth’s temperature has been steadily rising due to different factors, such as increased global emissions and deforestation. These studies propose differing values for the rate of the warming. Based on a report of IPCC, human-induced warming is likely increasing the average temperatures between 0.1°C and 0.3°C per decade.\nThe main analysis problem of this report is to find out the presence and the rate of global warming. We aim to model the global warming rate using Bayesian workflow. The analysis will be carried out using temperature observations gathered from 4 cities (Beijing, Helsinki, Los Angeles, Sydney) from a 25-year time span. We will fit three variants of the Gaussian linear model to average monthly temperatures of the four different locations. The goal is then to find an estimate for the slope of the linear model. As an example, the monthly data from Los Angeles is illustrated in Figure 1.\nFirst we will introduce the data, model, and priors that we are going to use. Then we will describe how we have run the model and conduct the convergence diagnostics, posterior predictive checks and sensitivity analysis. Lastly we will discuss the issues and improvements as well as final conclusions and self-reflection."
   }
 ]
