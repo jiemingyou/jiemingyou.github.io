@@ -6,9 +6,6 @@ author:
   - Zechen Ma
   - Jieming You
 
-format:
-  html: 
-    mainfont: Georgia
 ---
 
 ```{python}

@@ -34,7 +34,6 @@ format:
     theme: cosmos
     css: styles.css
     toc: true
-    mainfont: Helvetica
 
 
 
