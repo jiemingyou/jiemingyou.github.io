@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
 
 <meta charset="utf-8">
-<meta name="generator" content="quarto-1.1.189">
+<meta name="generator" content="quarto-1.2.335">
 
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
@@ -11,7 +11,7 @@
 <meta name="author" content="Jieming You">
 <meta name="dcterms.date" content="2022-11-12">
 
-<title>Jieming You - Predicting the rate of global warming</title>
+<title>Jieming You - Global Warming Rate Estimation using Linear Gaussian Model</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -135,6 +135,7 @@ gtag('js', new Date());
 gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -154,17 +155,17 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
   <li class="nav-item compact">
     <a class="nav-link" href="https://www.instagram.com/jiemingy/"><i class="bi bi-instagram" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="https://github.com/jiemingyou"><i class="bi bi-github" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
   <li class="nav-item compact">
     <a class="nav-link" href="http://linkedin.com/in/jiemingy/"><i class="bi bi-linkedin" role="img">
 </i> 
- </a>
+ <span class="menu-text"></span></a>
   </li>  
 </ul>
             <div id="quarto-search" class="" title="Search"></div>
@@ -176,14 +177,36 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 <!-- sidebar -->
 <!-- margin-sidebar -->
     <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
-        
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">On this page</h2>
+   
+  <ul>
+  <li><a href="#introduction" id="toc-introduction" class="nav-link active" data-scroll-target="#introduction">Introduction</a></li>
+  <li><a href="#data" id="toc-data" class="nav-link" data-scroll-target="#data">Data</a></li>
+  <li><a href="#models" id="toc-models" class="nav-link" data-scroll-target="#models">Models</a></li>
+  <li><a href="#priors" id="toc-priors" class="nav-link" data-scroll-target="#priors">Priors</a></li>
+  <li><a href="#mcmc-sampling" id="toc-mcmc-sampling" class="nav-link" data-scroll-target="#mcmc-sampling">MCMC sampling</a></li>
+  <li><a href="#convergence-diagnostics" id="toc-convergence-diagnostics" class="nav-link" data-scroll-target="#convergence-diagnostics">Convergence diagnostics</a>
+  <ul class="collapse">
+  <li><a href="#separate-model" id="toc-separate-model" class="nav-link" data-scroll-target="#separate-model">Separate model</a></li>
+  <li><a href="#pooled-model" id="toc-pooled-model" class="nav-link" data-scroll-target="#pooled-model">Pooled model</a></li>
+  <li><a href="#hierarchical-model" id="toc-hierarchical-model" class="nav-link" data-scroll-target="#hierarchical-model">Hierarchical model</a></li>
+  </ul></li>
+  <li><a href="#posterior-predictive-checks" id="toc-posterior-predictive-checks" class="nav-link" data-scroll-target="#posterior-predictive-checks">Posterior predictive checks</a></li>
+  <li><a href="#model-comparison" id="toc-model-comparison" class="nav-link" data-scroll-target="#model-comparison">Model Comparison</a></li>
+  <li><a href="#prior-sensitivity" id="toc-prior-sensitivity" class="nav-link" data-scroll-target="#prior-sensitivity">Prior Sensitivity</a></li>
+  <li><a href="#discussion" id="toc-discussion" class="nav-link" data-scroll-target="#discussion">Discussion</a></li>
+  <li><a href="#conclusion" id="toc-conclusion" class="nav-link" data-scroll-target="#conclusion">Conclusion</a></li>
+  <li><a href="#references" id="toc-references" class="nav-link" data-scroll-target="#references">References</a></li>
+  </ul>
+</nav>
     </div>
 <!-- main -->
-<main class="content" id="quarto-document-content">
+<main class="content page-columns page-full" id="quarto-document-content">
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Predicting the rate of global warming</h1>
+<h1 class="title">Global Warming Rate Estimation using Linear Gaussian Model</h1>
 </div>
 
 
@@ -205,20 +228,577 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
       <p class="date">November 12, 2022</p>
     </div>
   </div>
+  
     
   </div>
   
 
 </header>
 
-<div class="cell" data-execution_count="1">
-<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Site work in progress! 🔧"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>Site work in progress! 🔧</code></pre>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>There has been, and still is, a lot of controversy about the presence and magnitude of climate change. According to many studies, earth’s temperature has been steadily rising due to different factors, such as increased global emissions and deforestation. These studies propose differing values for the rate of the warming. Based on a report of IPCC, human-induced warming is likely increasing the average temperatures between 0.1°C and 0.3°C per decade.</p>
+<p>The main analysis problem of this project is to find out the presence and the rate of global warming. We aim to model the global warming rate using Bayesian workflow. The analysis will be carried out using temperature observations gathered from 4 cities (<code>Beijing</code>, <code>Helsinki</code>, <code>Los Angeles</code>, <code>Sydney</code>) from a 25-year time span. We will fit three variants of the Gaussian linear model to average monthly temperatures of the four different locations. The goal is then to find an estimate for the slope of the linear model. As an example, the monthly temperature fluctuation of the target cities are illustrated in <a href="#fig-temp">Figure&nbsp;1</a>.</p>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-temp" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="bayesian_files/figure-html/fig-temp-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;1: Monthly mean temperature</figcaption><p></p>
+</figure>
 </div>
 </div>
+</div>
+</section>
+<section id="data" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="data">Data</h2>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: right;">idx</th>
+<th style="text-align: right;">temp</th>
+<th style="text-align: left;">location</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">1</td>
+<td style="text-align: right;">13.38889</td>
+<td style="text-align: left;">los_angeles</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">2</td>
+<td style="text-align: right;">15.74008</td>
+<td style="text-align: left;">los_angeles</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">3</td>
+<td style="text-align: right;">15.31541</td>
+<td style="text-align: left;">los_angeles</td>
+</tr>
+<tr class="even">
+<td style="text-align: right;">4</td>
+<td style="text-align: right;">15.32037</td>
+<td style="text-align: left;">los_angeles</td>
+</tr>
+<tr class="odd">
+<td style="text-align: right;">5</td>
+<td style="text-align: right;">15.14695</td>
+<td style="text-align: left;">los_angeles</td>
+</tr>
+</tbody>
+</table>
+</div></div></div>
+<p>The data is gathered from the Average Daily Temperature Archive of the <a href="https://academic.udayton.edu/kissock/http/Weather/default.htm">University of Dayton</a> which originates from the National Climatic Data Center. The extracted features were month, year and temperature (F). For each city, we have 9250 records covering every month from 1.1.1995 to 13.5.2020, having a data set of 37000 rows.</p>
+<p>We have done modest data preparation mainly for the temperature. Firstly, we converted the Fahrenheit temperatures to Celsius. Secondly, null values were omitted from the dataset. The daily temperature observations were aggregated into monthly averages which were then re-indexed by turning into month-indices (1 to 305).</p>
+</section>
+<section id="models" class="level2">
+<h2 class="anchored" data-anchor-id="models">Models</h2>
+<p>We have chosen to use three variants of the linear Gaussian model for this analysis. This means that we assume the change in the average temperature to be linear. Even if the actual dependency is nonlinear, the linear model should be able to capture the overall trend of the temperatures. In addition, the time span of our data (25 years) is too narrow to reliably fit more sophisticated models accurately.</p>
+<p>In our first model, the separate model (<a href="#eq-sep">Equation&nbsp;1</a>), we treat each of the four measurement locations separately, i.e., we assume there to be no connections between the locations. A linear Gaussian model is fitted separately to the data of each measurement location.</p>
+<p><span id="eq-sep"><span class="math display">\[
+y_i \sim N(\alpha_i + \beta_i x_i,~\sigma_i)
+\tag{1}\]</span></span></p>
+<p>In the pooled model (<a href="#eq-pool">Equation&nbsp;2</a>), we assume there to be no distinction between the measurement locations. In the model all data is gathered together, and a single linear model is fitted to the data. With the combined data, we expect to see higher variances and larger posterior intervals due to the different natures of the measurement locations.</p>
+<p><span id="eq-pool"><span class="math display">\[
+y \sim N(\alpha + \beta x,~\sigma)
+\tag{2}\]</span></span></p>
+<p>In the hierarchical linear model (<a href="#eq-hier">Equation&nbsp;3</a>), we assume that slopes are drawn from a common hyper prior distribution. The hierarchical model assumes that the possible increases in the average temperature correlates between locations. Or put simply: If there is warming, the model assumes it to be a global phenomenon. The other parameters, intercept and standard deviation, are assumed to be individual to the measurement location since they represent the annual average (at the intercept) and the seasonal fluctuation of the temperature.</p>
+<p><span id="eq-hier"><span class="math display">\[
+\begin{aligned}
+y_i \sim  &amp;N(\alpha_i + \beta_i x_i,~\sigma_i) \\
+\beta_i \sim &amp;N(\mu_0, \sigma_0)
+\end{aligned}
+\tag{3}\]</span></span></p>
+</section>
+<section id="priors" class="level2">
+<h2 class="anchored" data-anchor-id="priors">Priors</h2>
+<p>We chose to use weakly informative normal priors for all the models to avoid any biases that more informative priors may introduce. In particular, we wanted a very weakly informative prior for the slope parameter to maximize the influence of the data on the outcome.</p>
+<p>In our model, the slope parameter is of the form degrees per month, which means that the values for the slope are expected to be quite close to <span class="math inline">\(0\)</span>. The prior for the slope was chosen to be <span class="math inline">\(N(0, 0.1)\)</span>. The mean was chosen to be <span class="math inline">\(0\)</span> to avoid any biases – it is equally likely for the slope to be positive or negative. Slope of <span class="math inline">\(0.1 °C\)</span> corresponds to over <span class="math inline">\(1\)</span> degree increase in the average for each year. The rate of <span class="math inline">\(1\)</span> degree per year is very unlikely and thus the prior should be very weakly informative.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\beta &amp;\sim N(0, 0.1) \\
+\beta_i &amp;\sim N(0, 0.1)
+\end{aligned}
+\]</span></p>
+<p>The prior for the intercept, <span class="math inline">\(N(10, 20)\)</span>, is loosely based on available information of the average temperature on earth (<span class="math inline">\(14°C\)</span> with oceans, <span class="math inline">\(8°C\)</span> land only). The standard deviation was intentionally set quite high to keep the prior weak. In our model the intercept is in the beginning of the year 1995, which means that the intercept represents the annual average temperature close to that time.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\alpha &amp;\sim N(10, 20) \\
+\alpha_i &amp;\sim N(10, 20)
+\end{aligned}
+\]</span></p>
+<p>For the standard deviation in the linear model, <span class="math inline">\(N(0, 20)\)</span> was used. The standard deviation corresponds to the annual fluctuations in the monthly averages. The prior covers a 40 degree within 1 std range and hence it should be weakly informative even in the locations with high fluctuations in the monthly averages, such as Helsinki.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\sigma &amp;\sim N(0, 20) \\
+\sigma_i &amp;\sim N(0, 20)
+\end{aligned}
+\]</span></p>
+<p>In the hierarchical model the hyper priors for the mean and standard deviation of the slope were chosen to be <span class="math inline">\(N(0, 0.1)\)</span> based on the prior used in the separate model.</p>
+<p><span class="math display">\[
+\begin{aligned}
+\mu_0 \sim &amp; N(0, 0.1) \\
+\sigma_0 \sim &amp; N(0, 0.1)
+\end{aligned}
+\]</span></p>
+</section>
+<section id="mcmc-sampling" class="level2">
+<h2 class="anchored" data-anchor-id="mcmc-sampling">MCMC sampling</h2>
+<p>We used RStan to perform the Markov Chain Monte Carlo simulation. Three Stan models for separate, pooled, and hierarchical model was used, respectively. The models use hard-coded priors, which were manually altered during sensitivity analysis.</p>
+<p><strong>Hierarchical model</strong></p>
+<div class="cell" data-output.var="priors">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Separate Gaussian linear model</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;                   <span class="co">// number of data points</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; J;                   <span class="co">// number of groups</span></span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] x;                      <span class="co">// dates</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] y;                      <span class="co">// temperatures</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=J&gt; g; <span class="co">// group indicators</span></span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Separate parameters for all groups</span></span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[J] alpha;           <span class="co">// intercept</span></span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[J] beta;            <span class="co">// slope</span></span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[J] sigma;  <span class="co">// std </span></span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Linear model using separate intercept and slope for all sites</span></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] mu;</span>
+<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N) {</span>
+<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a>    mu[i] = alpha[g[i]] + beta[g[i]] * x[i];</span>
+<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-25"><a href="#cb1-25" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb1-26"><a href="#cb1-26" aria-hidden="true" tabindex="-1"></a>  alpha ~ normal(<span class="dv">10</span>, <span class="dv">20</span>); <span class="co">// Normal prior for the intercept</span></span>
+<span id="cb1-27"><a href="#cb1-27" aria-hidden="true" tabindex="-1"></a>  beta  ~ normal(<span class="dv">0</span>, <span class="fl">0.1</span>); <span class="co">// Normal prior for slope</span></span>
+<span id="cb1-28"><a href="#cb1-28" aria-hidden="true" tabindex="-1"></a>  sigma ~ normal(<span class="dv">0</span>, <span class="dv">20</span>);  <span class="co">// Half normal prior for Std</span></span>
+<span id="cb1-29"><a href="#cb1-29" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-30"><a href="#cb1-30" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Observation model using the separate parameters</span></span>
+<span id="cb1-31"><a href="#cb1-31" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N) {</span>
+<span id="cb1-32"><a href="#cb1-32" aria-hidden="true" tabindex="-1"></a>    y[i] ~ normal(mu[i], sigma[g[i]]);</span>
+<span id="cb1-33"><a href="#cb1-33" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-34"><a href="#cb1-34" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb1-35"><a href="#cb1-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-36"><a href="#cb1-36" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb1-37"><a href="#cb1-37" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">real</span> log_lik;</span>
+<span id="cb1-38"><a href="#cb1-38" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">real</span> y_rep;</span>
+<span id="cb1-39"><a href="#cb1-39" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb1-40"><a href="#cb1-40" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N) {</span>
+<span id="cb1-41"><a href="#cb1-41" aria-hidden="true" tabindex="-1"></a>    y_rep[i] = normal_rng(mu[i], sigma[g[i]]);</span>
+<span id="cb1-42"><a href="#cb1-42" aria-hidden="true" tabindex="-1"></a>    log_lik[i] = normal_lpdf(y[i] | mu[i], sigma[g[i]]);</span>
+<span id="cb1-43"><a href="#cb1-43" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb1-44"><a href="#cb1-44" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Pooled model</strong></p>
+<div class="cell" data-output.var="priors">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Pooled Gaussian linear model</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;       <span class="co">// number of data points</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] x;          <span class="co">// dates</span></span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] y;          <span class="co">// temperatures</span></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Common parameters</span></span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> alpha;           <span class="co">// intercept</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta;            <span class="co">// slope</span></span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma;  <span class="co">// std </span></span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-16"><a href="#cb2-16" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb2-17"><a href="#cb2-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Linear model </span></span>
+<span id="cb2-18"><a href="#cb2-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] mu = alpha + beta*x;</span>
+<span id="cb2-19"><a href="#cb2-19" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-20"><a href="#cb2-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb2-22"><a href="#cb2-22" aria-hidden="true" tabindex="-1"></a>  alpha ~ normal(<span class="dv">10</span>, <span class="dv">20</span>); <span class="co">// Normal prior for intercept</span></span>
+<span id="cb2-23"><a href="#cb2-23" aria-hidden="true" tabindex="-1"></a>  beta  ~ normal(<span class="dv">0</span>, <span class="fl">0.1</span>); <span class="co">// Normal prior for slope</span></span>
+<span id="cb2-24"><a href="#cb2-24" aria-hidden="true" tabindex="-1"></a>  sigma ~ normal(<span class="dv">0</span>, <span class="dv">20</span>);  <span class="co">// Half normal prior for Std</span></span>
+<span id="cb2-25"><a href="#cb2-25" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-26"><a href="#cb2-26" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Observation model</span></span>
+<span id="cb2-27"><a href="#cb2-27" aria-hidden="true" tabindex="-1"></a>  y ~ normal(mu, sigma);</span>
+<span id="cb2-28"><a href="#cb2-28" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb2-29"><a href="#cb2-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-30"><a href="#cb2-30" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb2-31"><a href="#cb2-31" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">real</span> log_lik;</span>
+<span id="cb2-32"><a href="#cb2-32" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">real</span> y_rep;</span>
+<span id="cb2-33"><a href="#cb2-33" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb2-34"><a href="#cb2-34" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N) {</span>
+<span id="cb2-35"><a href="#cb2-35" aria-hidden="true" tabindex="-1"></a>    y_rep[i] = normal_rng(mu[i], sigma);</span>
+<span id="cb2-36"><a href="#cb2-36" aria-hidden="true" tabindex="-1"></a>    log_lik[i] = normal_lpdf(y[i] | mu[i], sigma);</span>
+<span id="cb2-37"><a href="#cb2-37" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb2-38"><a href="#cb2-38" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p><strong>Hierarchical model</strong></p>
+<div class="cell" data-output.var="priors">
+<details>
+<summary>Show the code</summary>
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode stan code-with-copy"><code class="sourceCode stan"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="co">// Hierarchical Gaussian linear model</span></span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a><span class="kw">data</span> {</span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; N;                   <span class="co">// number of data points</span></span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>&gt; J;                   <span class="co">// number of groups</span></span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] x;                      <span class="co">// dates</span></span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] y;                      <span class="co">// temperatures</span></span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">int</span>&lt;<span class="kw">lower</span>=<span class="dv">1</span>, <span class="kw">upper</span>=J&gt; g; <span class="co">// group indicators</span></span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="kw">parameters</span> {</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Separate intercept and std. Hierarchical slope</span></span>
+<span id="cb3-14"><a href="#cb3-14" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[J] alpha;           <span class="co">// intercept</span></span>
+<span id="cb3-15"><a href="#cb3-15" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[J] beta;            <span class="co">// slope</span></span>
+<span id="cb3-16"><a href="#cb3-16" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt;[J] sigma;  <span class="co">// std </span></span>
+<span id="cb3-17"><a href="#cb3-17" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Params for beta</span></span>
+<span id="cb3-18"><a href="#cb3-18" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> mu0;                  <span class="co">// mean</span></span>
+<span id="cb3-19"><a href="#cb3-19" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span>&lt;<span class="kw">lower</span>=<span class="dv">0</span>&gt; sigma0;      <span class="co">// std</span></span>
+<span id="cb3-20"><a href="#cb3-20" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-21"><a href="#cb3-21" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-22"><a href="#cb3-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-23"><a href="#cb3-23" aria-hidden="true" tabindex="-1"></a><span class="kw">transformed parameters</span> {</span>
+<span id="cb3-24"><a href="#cb3-24" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Linear model using separate intercepts and hierarchical slopes</span></span>
+<span id="cb3-25"><a href="#cb3-25" aria-hidden="true" tabindex="-1"></a>  <span class="dt">vector</span>[N] mu;</span>
+<span id="cb3-26"><a href="#cb3-26" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N) {</span>
+<span id="cb3-27"><a href="#cb3-27" aria-hidden="true" tabindex="-1"></a>    mu[i] = alpha[g[i]] + beta[g[i]] * x[i];</span>
+<span id="cb3-28"><a href="#cb3-28" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-29"><a href="#cb3-29" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-30"><a href="#cb3-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" aria-hidden="true" tabindex="-1"></a><span class="kw">model</span> {</span>
+<span id="cb3-32"><a href="#cb3-32" aria-hidden="true" tabindex="-1"></a>  mu0 ~ normal(-<span class="dv">1</span>, <span class="fl">0.1</span>);        <span class="co">// Hyper priors</span></span>
+<span id="cb3-33"><a href="#cb3-33" aria-hidden="true" tabindex="-1"></a>  sigma0 ~ normal(-<span class="dv">1</span>, <span class="fl">0.1</span>);</span>
+<span id="cb3-34"><a href="#cb3-34" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-35"><a href="#cb3-35" aria-hidden="true" tabindex="-1"></a>  alpha ~ normal(<span class="dv">10</span>, <span class="dv">20</span>);      <span class="co">// Normal prior for the intercept</span></span>
+<span id="cb3-36"><a href="#cb3-36" aria-hidden="true" tabindex="-1"></a>  beta  ~ normal(mu0, sigma0); <span class="co">// Normal prior for slope</span></span>
+<span id="cb3-37"><a href="#cb3-37" aria-hidden="true" tabindex="-1"></a>  sigma ~ normal(<span class="dv">0</span>, <span class="dv">20</span>);       <span class="co">// Half normal prior for Std</span></span>
+<span id="cb3-38"><a href="#cb3-38" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-39"><a href="#cb3-39" aria-hidden="true" tabindex="-1"></a>  <span class="co">// Observation model</span></span>
+<span id="cb3-40"><a href="#cb3-40" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N) {</span>
+<span id="cb3-41"><a href="#cb3-41" aria-hidden="true" tabindex="-1"></a>    y[i] ~ normal(mu[i], sigma[g[i]]);</span>
+<span id="cb3-42"><a href="#cb3-42" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-43"><a href="#cb3-43" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb3-44"><a href="#cb3-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb3-45"><a href="#cb3-45" aria-hidden="true" tabindex="-1"></a><span class="kw">generated quantities</span> {</span>
+<span id="cb3-46"><a href="#cb3-46" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">real</span> log_lik;</span>
+<span id="cb3-47"><a href="#cb3-47" aria-hidden="true" tabindex="-1"></a>  <span class="dt">array</span>[N] <span class="dt">real</span> y_rep;</span>
+<span id="cb3-48"><a href="#cb3-48" aria-hidden="true" tabindex="-1"></a>  <span class="dt">real</span> beta_pred;</span>
+<span id="cb3-49"><a href="#cb3-49" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-50"><a href="#cb3-50" aria-hidden="true" tabindex="-1"></a>  beta_pred = normal_rng(mu0, sigma0);</span>
+<span id="cb3-51"><a href="#cb3-51" aria-hidden="true" tabindex="-1"></a>  </span>
+<span id="cb3-52"><a href="#cb3-52" aria-hidden="true" tabindex="-1"></a>  <span class="cf">for</span> (i <span class="cf">in</span> <span class="dv">1</span>:N) {</span>
+<span id="cb3-53"><a href="#cb3-53" aria-hidden="true" tabindex="-1"></a>    y_rep[i] = normal_rng(mu[i], sigma[g[i]]);</span>
+<span id="cb3-54"><a href="#cb3-54" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb3-55"><a href="#cb3-55" aria-hidden="true" tabindex="-1"></a>    log_lik[i] = normal_lpdf(y[i] | mu[i], sigma[g[i]]);</span>
+<span id="cb3-56"><a href="#cb3-56" aria-hidden="true" tabindex="-1"></a>  }</span>
+<span id="cb3-57"><a href="#cb3-57" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</details>
+</div>
+<p>The Stan models were run with 4 chains and 500 + 500 iterations per chain. For the hierarchical model, the iterations were raised to 1000 + 1000 to reduce <span class="math inline">\(\hat{R}\)</span> values.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">list</span>(</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> temp_data<span class="sc">$</span>idx,    <span class="co"># month idx</span></span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">y =</span> temp_data<span class="sc">$</span>temp,   <span class="co"># temps</span></span>
+<span id="cb4-4"><a href="#cb4-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">g =</span> temp_data<span class="sc">$</span>group,  <span class="co"># group indicators</span></span>
+<span id="cb4-5"><a href="#cb4-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">N =</span> <span class="fu">nrow</span>(temp_data),  <span class="co"># number of data points</span></span>
+<span id="cb4-6"><a href="#cb4-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">J =</span> <span class="fu">length</span>(cities)    <span class="co"># number of groups</span></span>
+<span id="cb4-7"><a href="#cb4-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb4-8"><a href="#cb4-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb4-9"><a href="#cb4-9" aria-hidden="true" tabindex="-1"></a>fit_sep  <span class="ot">&lt;-</span> separate<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data=</span>data)</span>
+<span id="cb4-10"><a href="#cb4-10" aria-hidden="true" tabindex="-1"></a>fit_pool <span class="ot">&lt;-</span> pooled<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data=</span>data)</span>
+<span id="cb4-11"><a href="#cb4-11" aria-hidden="true" tabindex="-1"></a>fit_hier <span class="ot">&lt;-</span> hier<span class="sc">$</span><span class="fu">sample</span>(<span class="at">data=</span>data, <span class="at">step_size =</span> <span class="fl">0.1</span>,</span>
+<span id="cb4-12"><a href="#cb4-12" aria-hidden="true" tabindex="-1"></a>                        <span class="at">adapt_delta=</span>.<span class="dv">95</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p>With the hierarchical model, approximately 5% to 15% of transitions ended in divergence during warm-up. This was probably due to the scale parameter, standard deviation, beta getting zero values as a result of the narrow half-normal hyper prior. This was later addressed by setting a custom <code>adapt_delta</code> parameter for the sampling.</p>
+</section>
+<section id="convergence-diagnostics" class="level2 page-columns page-full">
+<h2 class="anchored" data-anchor-id="convergence-diagnostics">Convergence diagnostics</h2>
+<p>Since the separate and hierarchical have different variables for each city, we only check the convergence for one city (Beijing). Pooled model on the other hand, has naturally one alpha and beta.</p>
+<section id="separate-model" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="separate-model">Separate model</h3>
+<div class="cell">
+
+</div>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">variable</th>
+<th style="text-align: right;">rhat</th>
+<th style="text-align: right;">ess_bulk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">alpha[4]</td>
+<td style="text-align: right;">0.9998801</td>
+<td style="text-align: right;">2751.634</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">beta[4]</td>
+<td style="text-align: right;">1.0001953</td>
+<td style="text-align: right;">2997.470</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma[4]</td>
+<td style="text-align: right;">1.0020886</td>
+<td style="text-align: right;">4373.331</td>
+</tr>
+</tbody>
+</table>
+</div></div></div>
+<p>For the separate model, the R values for the slope and intercept are below the commonly used threshold 1.01. Hence, the chains are converged and the results can be considered reliable. The effective sample sizes (ess_bulk) are high, which means that there is little correlation between the samples, i.e., the model should capture the whole distribution. No problems with divergences or tree depth were encountered.</p>
+</section>
+<section id="pooled-model" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="pooled-model">Pooled model</h3>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">variable</th>
+<th style="text-align: right;">rhat</th>
+<th style="text-align: right;">ess_bulk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">alpha</td>
+<td style="text-align: right;">1.0002801</td>
+<td style="text-align: right;">1880.207</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">beta</td>
+<td style="text-align: right;">0.9999699</td>
+<td style="text-align: right;">1983.445</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma</td>
+<td style="text-align: right;">1.0030777</td>
+<td style="text-align: right;">1981.519</td>
+</tr>
+</tbody>
+</table>
+</div></div></div>
+<p>For the pooled model the <span class="math inline">\(\hat{R}\)</span> values are slightly higher than with the separate model but they are less than 1.01. Hence, we can confidently assume that the chains have converged. The effective sample sizes <code>ess_bulk</code> are about half of the sizes from separate model. This is expected as the we have “pooled” all the data in to a single group. The values are still high enough and should not cause any problems. No problems with divergences or tree depth were encountered.</p>
+</section>
+<section id="hierarchical-model" class="level3 page-columns page-full">
+<h3 class="anchored" data-anchor-id="hierarchical-model">Hierarchical model</h3>
+<div class="cell page-columns page-full">
+
+<div class="no-row-height column-margin column-container"><div class="cell-output-display">
+<table class="table table-sm table-striped">
+<thead>
+<tr class="header">
+<th style="text-align: left;">variable</th>
+<th style="text-align: right;">rhat</th>
+<th style="text-align: right;">ess_bulk</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">alpha[4]</td>
+<td style="text-align: right;">1.003701</td>
+<td style="text-align: right;">1942.1847</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">beta[4]</td>
+<td style="text-align: right;">1.006525</td>
+<td style="text-align: right;">2129.3775</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma[4]</td>
+<td style="text-align: right;">1.001826</td>
+<td style="text-align: right;">2967.4605</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">mu0</td>
+<td style="text-align: right;">1.002452</td>
+<td style="text-align: right;">1821.2931</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">sigma0</td>
+<td style="text-align: right;">1.008439</td>
+<td style="text-align: right;">442.9684</td>
+</tr>
+</tbody>
+</table>
+</div></div></div>
+<p>For the hierarchical model, the <span class="math inline">\(\hat{R}\)</span> values for the slope and intercept are slightly above the commonly used threshold 1.01. In addition, <span class="math inline">\(\hat{R}\)</span> values for the hyper prior parameters are above the threshold especially for <code>sigma0</code>. The <span class="math inline">\(\widehat{ESS}\)</span> of <code>sigma0</code> is also considerably smaller than <span class="math inline">\(\widehat{ESS}\)</span> of other parameters. This is probably due to divergent transitions during warm-up. We increased the adapt_delta and the number of iterations from the initial to 500 + 500 to reduce the <span class="math inline">\(\hat{R}\)</span> values.</p>
+<p>All divergent transitions happened during warm-up, which is not as serious as divergences after warmup. However, the percentage of the divergent transitions is quite high, which may negatively affect the convergence and thus reliability.</p>
+</section>
+</section>
+<section id="posterior-predictive-checks" class="level2">
+<h2 class="anchored" data-anchor-id="posterior-predictive-checks">Posterior predictive checks</h2>
+<p>Posterior predictivity was tested by sampling replicated values from the posterior distribution and comparing them to the empirical data. As can be seen from <a href="#fig-post_sep">Figure&nbsp;2</a>, <a href="#fig-post_pool">Figure&nbsp;3</a>, and <a href="#fig-post_hier">Figure&nbsp;4</a> the model can not capture the true nature of the data due to the annual fluctuation in the monthly average temperature. However, in our case we are mainly interested in the annual mean and its increase, i.e., the discrepancies between the replicated and actual data should not be an issue.</p>
+<div class="cell">
+
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-post_sep" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="bayesian_files/figure-html/fig-post_sep-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;2: Separate model posterior draws</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-post_pool" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="bayesian_files/figure-html/fig-post_pool-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;3: Pooled model posterior draws</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell" data-layout-align="center">
+<div class="cell-output-display">
+<div id="fig-post_hier" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="bayesian_files/figure-html/fig-post_hier-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;4: Hierarchical model posterior draws</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="model-comparison" class="level2">
+<h2 class="anchored" data-anchor-id="model-comparison">Model Comparison</h2>
+<p>The models are compared using PSIS-LOO values and the reliability of the estimates is assessed using pareto-k values.</p>
+<div class="cell">
+
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Pareto k-values </caption>
+<thead>
+<tr class="header">
+<th style="text-align: left;">stat</th>
+<th style="text-align: right;">separate</th>
+<th style="text-align: right;">pooled</th>
+<th style="text-align: right;">hierarchical</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: left;">1st Qu.</td>
+<td style="text-align: right;">-0.077</td>
+<td style="text-align: right;">-0.148</td>
+<td style="text-align: right;">-0.098</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">3rd Qu.</td>
+<td style="text-align: right;">0.021</td>
+<td style="text-align: right;">-0.067</td>
+<td style="text-align: right;">0.016</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Max.</td>
+<td style="text-align: right;">0.277</td>
+<td style="text-align: right;">0.097</td>
+<td style="text-align: right;">0.235</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Mean</td>
+<td style="text-align: right;">-0.029</td>
+<td style="text-align: right;">-0.106</td>
+<td style="text-align: right;">-0.041</td>
+</tr>
+<tr class="odd">
+<td style="text-align: left;">Median</td>
+<td style="text-align: right;">-0.025</td>
+<td style="text-align: right;">-0.120</td>
+<td style="text-align: right;">-0.032</td>
+</tr>
+<tr class="even">
+<td style="text-align: left;">Min.</td>
+<td style="text-align: right;">-0.382</td>
+<td style="text-align: right;">-0.247</td>
+<td style="text-align: right;">-0.332</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<table class="table table-sm table-striped">
+<caption>Rounding the elpd_loo based on the MCSE of 0.1 </caption>
+<thead>
+<tr class="header">
+<th style="text-align: right;">loo_separate_model</th>
+<th style="text-align: right;">loo_pooled_model</th>
+<th style="text-align: right;">loo_hierarchical_model</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td style="text-align: right;">-3828</td>
+<td style="text-align: right;">-4317</td>
+<td style="text-align: right;">-3826</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+<p>All models have k-values less than 0.5. Hence, the obtained elpd values can be considered reliable. Based on the obtained values, the hierarchical model had the greatest elpd-value (-3826) and it is the most suitable model. However, due to the convergence issues with the hierarchical model the separate model can be considered a good alternative.</p>
+</section>
+<section id="prior-sensitivity" class="level2">
+<h2 class="anchored" data-anchor-id="prior-sensitivity">Prior Sensitivity</h2>
+<p>When using sensible priors, the model is not greatly affected by the prior choice as there are sufficient data points to reduce the prior’s effect on the posterior model.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="../assets/prior_sensitivity.jpg" class="img-fluid figure-img"></p>
+<p></p><figcaption class="figure-caption">Beta prior sensitivity to posterior distributions</figcaption><p></p>
+</figure>
+</div>
+</section>
+<section id="discussion" class="level2">
+<h2 class="anchored" data-anchor-id="discussion">Discussion</h2>
+<p>During the analysis process we noticed that using monthly averages seems to induce a lot of variance to the results due to the annual fluctuation in temperature. This can be observed by comparing the confidence intervals from Sydney and Los Angeles (less fluctuation) to the intervals of Helsinki and Beijing (more fluctuation). Tighter intervals were obtained for the slope for cities with less annual fluctuation.</p>
+<p>The hierarchical model produced larger PSIS-LOO values than the separate model. However, due to the divergences and <span class="math inline">\(\hat{R}\)</span> issues, the separate model should also be considered as a viable option. The Stan code of the hierarchical model should be revised to reduce the number of divergent transitions during warm-up.</p>
+<p>Possible improvements for the current model include using data from a wider time span and using other metrics instead of the monthly averages, which induce a lot of uncertainty to the posterior distributions.</p>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>With all models used in this report the predicted mean of the slope parameter was positive and on the order of 0.4 degrees per decade. The 80% credible intervals are quite wide, however, even the lower bound is on the positive side with most cities. Beijing has the widest interval regardless of the used model and it includes also negative slope values. <a href="#fig-final">Figure&nbsp;5</a> presents the posterior distributions of the slope parameter for the separate model.</p>
+<div class="cell">
+<div class="cell-output-display">
+<div id="fig-final" class="quarto-figure quarto-figure-center anchored">
+<figure class="figure">
+<p><img src="bayesian_files/figure-html/fig-final-1.png" class="img-fluid figure-img" width="672"></p>
+<p></p><figcaption class="figure-caption">Figure&nbsp;5: Predictive distribution sampled using hierarchical hyperpriors µ_0 and σ_0</figcaption><p></p>
+</figure>
+</div>
+</div>
+</div>
+<p>The used priors do not significantly affect the results. Thus, we can conclude that the results should not be biased in any way. The used models produce results that agree with other research done on the topic. The observed global warming rate is around 0.1-0.3 degrees per decade (IPCC, n.d.). Our model’s 80% posterior interval for the slope was around 0.02-0.08 degrees per year or around 0.2-0.8 degrees per decade (<a href="#fig-final">Figure&nbsp;5</a>). However, the results of this report cannot be considered accurate nor reliable. More sophisticated analysis is needed to obtain more accurate estimates for the rate of warming.</p>
+</section>
+<section id="references" class="level2">
+<h2 class="anchored" data-anchor-id="references">References</h2>
+<p>Allen, M.R., O.P. Dube, W. Solecki, F. Aragón-Durand, W. Cramer, S. Humphreys, M. Kainuma, J. Kala, N. Mahowald, Y. Mulugetta, R. Perez, M. Wairiu, and K. Zickfeld, 2018: Framing and Context. In: Global Warming of 1.5°C. An IPCC Special Report on the impacts of global warming of 1.5°C above pre-industrial levels and related global greenhouse gas emission pathways, in the context of strengthening the global response to the threat of climate change, sustainable development, and efforts to eradicate poverty [Masson-Delmotte, 15 V., P. Zhai, H.-O. Pörtner, D. Roberts, J. Skea, P.R. Shukla, A. Pirani, W. Moufouma-Okia, C. Péan, R. Pidcock, S. Connors, J.B.R. Matthews, Y. Chen, X. Zhou, M.I. Gomis, E. Lonnoy, T. Maycock, M. Tignor, and T. Waterfield (eds.)]. Cambridge University Press, Cambridge, UK and New York, NY, USA, pp.&nbsp;49-92</p>
 
 
+</section>
 
 </main> <!-- /main -->
 <script id="quarto-html-after-body" type="application/javascript">
@@ -262,7 +842,24 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
     button.classList.add('code-copy-button-checked');
     var currentTitle = button.getAttribute("title");
     button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
     setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
       button.setAttribute("title", currentTitle);
       button.classList.remove('code-copy-button-checked');
     }, 1000);
@@ -298,24 +895,42 @@ window.document.addEventListener("DOMContentLoaded", function (event) {
       return note.innerHTML;
     });
   }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
   var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
   for (var i=0; i<bibliorefs.length; i++) {
     const ref = bibliorefs[i];
-    const cites = ref.parentNode.getAttribute('data-cites').split(' ');
-    tippyHover(ref, function() {
-      var popup = window.document.createElement('div');
-      cites.forEach(function(cite) {
-        var citeDiv = window.document.createElement('div');
-        citeDiv.classList.add('hanging-indent');
-        citeDiv.classList.add('csl-entry');
-        var biblioDiv = window.document.getElementById('ref-' + cite);
-        if (biblioDiv) {
-          citeDiv.innerHTML = biblioDiv.innerHTML;
-        }
-        popup.appendChild(citeDiv);
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
       });
-      return popup.innerHTML;
-    });
+    }
   }
 });
 </script>
