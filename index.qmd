@@ -24,6 +24,11 @@ This website is for archiving and documenting my personal projects mainly relate
 
 ::: {.grid}
 
+::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/prediction.html' onmouseover="" style="cursor: pointer;"}
+### Choice Prediction Model
+Proposing a method for modeling product choice probability within a product assortment using Random Forest Regressor.
+:::
+
 ::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://jieming.me/sahkonyt.html' onmouseover="" style="cursor: pointer;"}
 ### Sähkö Nyt
 Electricity price monitoring app for iOS developed using ```Swift``` and ```SwiftUI```. Launching early 2023.
@@ -94,7 +99,7 @@ using computer vision. Prototype presented to the HSL.
 ::: {.grid}
 
 ::: {.project .g-col-12 .g-col-md-6 onclick=location.href='https://deep-dive-8f0636.webflow.io' onmouseover="" style="cursor: pointer;"}
-#### Deep Dive Case competition <br/> [1st place]{style="color: RoyalBlue;"}
+#### Deep Dive Case competition <br/> 🏆 [1st place]{style="color: RoyalBlue;"}
 Deep tech Research-to-Business (R2B) case competition.
 :::
 

@@ -1,0 +1,108 @@
+---
+title: "Choice Prediction and Assortment Optimization using Random Forest Regressor"
+date: 11/12/2022
+author:   
+  - Jieming You
+  - Dennis Lo
+  - Ilkka Lappeteläinen
+  - Zechen Ma
+toc: true
+format:
+  html:
+    grid:
+      margin-width: 350px
+      sidebar-width: 200px
+---
+
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+from itertools import groupby, combinations
+from copy import deepcopy
+from math import *
+import random
+import ast
+
+from sklearn.model_selection import train_test_split
+from sklearn.ensemble import RandomForestRegressor
+from sklearn.metrics import mean_squared_error, r2_score
+
+sns.set_theme(style="white")
+```
+
+# Introduction
+
+This report analyzes a pricing and assortment optimization problem by solving several tasks. The problem consists of 5 different stock-keeping-units (SKUs): $[a,b,c,d,e,f]$. Each SKU has 5 different price levels: $[3000, 2700, 2400, 2100, 1800]$, meaning that there are 30 unique products in total.
+
+A dataset ``assortment.txt`` is provided where each line in the dataset represents an assortment containing a set of the above-mentioned SKUs, with each SKU having one of the five price levels. In the dataset, the 30 products are assigned a number from 1 to 30 by ordering the products from SKU $a$ to $f$. Furthermore, within each SKU, the products are ordered from the highest to the lowest price level. For example, SKU $b$ with the price 2700 will be represented as the number 7.  In total, there are 2500 assortments.
+
+Another dataset ``probability.txt`` is provided which has an identical structure. However, this dataset represents the choice probability of a product in the assortment instead of the product itself. In order to solve the tasks related to this problem, these datasets must first be preprocessed, which is elaborated in the following section.
+
+# Feature Engineering
+
+Our aim is to create a model that predicts the choice probability of a product given the other products in the assortment.
+
+Instead of predicting the choice distribution of the whole assortment, it would be easier to predict the choice probability of a single product, given the other available products in the assortment.
+
+For example, instead of coming up with a choice probability distribution for the assortment $[0, 5, 9]$, one might ask what is the probability of customer choosing product 5, given that the other options are not buying anything (0) and product 9.
+
+## Labels
+
+The choice probabilities provided in the ``probabilities.txt`` file are $n$-dimensional arrays with $n$ discrete choice options. In order to simplify our model and reduce the amount of model training required, we reduced the dimension of the label space by splitting each array (choice probability distribution) into $n$ distinct labels, each consisting of a single probability. This way, instead of predicting an array of probabilities, we are only predicting the choice probability of a single product.
+
+$$
+\begin{aligned}
+\text{original array} & & \text{labels} \\
+\left[\textcolor{red}{0.4}, \textcolor{OliveGreen}{0.1}, \textcolor{blue}{0.5}\right] & \longrightarrow & [\textcolor{red}{0.4}] \\
+&& [\textcolor{OliveGreen}{0.1}] \\
+&&[\textcolor{blue}{0.5}]
+\end{aligned}
+$$
+
+## Features
+
+Each assortment array is also split into $n$ feature vectors as follows; for each product in an assortment:
+
+1) Set the product as the first feature $x_1$
+
+$$
+\begin{aligned}
+\text{original array} & & \text{feature vectors} \\
+\left[\textcolor{red}{0}, \textcolor{OliveGreen}{5}, \textcolor{blue}{9}\right] & \longrightarrow & [\textcolor{red}{0} \\
+&& [\textcolor{OliveGreen}{5}\\
+&& [\textcolor{blue}{9}
+\end{aligned}
+$$
+
+
+2) Encode the information of the other products in the assortment using multi-hot-encoding, also known as multi-label-binarizing
+
+Because each assortment has varying amounts of products, the multi-hot-encoding is used to standardize the length of the feature vectors.
+
+As there is an outside option and thirty (30) different products, the multi-label-binarizer has a shape of ```(1,31)```. For example, an assortment $[0,5,9]$ can be represented as 
+
+$$
+\begin{aligned}
+\text{Assortment} \quad & [\textcolor{red}{0}, \textcolor{OliveGreen}{5}, \textcolor{blue}{9}]\\
+\text{Multi-hot} \quad & [\textcolor{red}{1},0,0,0,0,\textcolor{OliveGreen}{1},0,0,0,\textcolor{blue}{1},0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+\end{aligned}
+$$
+
+
+Hence, the final feature vectors are
+
+$$
+\begin{aligned}
+\text{original array} &&  && \text{feature vectors}\\
+[\textcolor{red}{0}, \textcolor{OliveGreen}{5}, \textcolor{blue}{9}] && \longrightarrow && [\textcolor{red}{0},~ (0, 0, 0, 0, 0, \textcolor{OliveGreen}{1}, 0, 0, 0, \textcolor{blue}{1}, 0, ..., 0)]\\
+&&&& [\textcolor{OliveGreen}{5}, ~(\textcolor{red}{1}, 0, 0, 0, 0, 0, 0, 0, 0, \textcolor{blue}{1}, 0, ..., 0)]\\
+&&&& [\textcolor{blue}{9}, ~(\textcolor{red}{1}, 0, 0, 0, 0, \textcolor{OliveGreen}{1}, 0, 0, 0, 0, 0, ..., 0)]
+\end{aligned}
+$$
+
+After performing the transformations, we have a total of 8617 data points. The data points are finally split into separate training and testing sets. For the initial training, we will use the conventional 80-20 split and shuffle the datapoints to reduce the risk of overfitting.
+
+

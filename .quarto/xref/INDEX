@@ -19,5 +19,12 @@
   },
   "bayesian/bayesian.qmd": {
     "bayesian.html": "2f6ed2f8"
+  },
+  "pricing.qmd": {
+    "pricing.html": "143c002c"
+  },
+  "prediction.ipynb": {
+    "prediction.html": "09f70f5e",
+    "prediction.tex": "bbf6e822"
   }
 }

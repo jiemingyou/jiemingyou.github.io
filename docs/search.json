@@ -1,5 +1,61 @@
 [
   {
+    "objectID": "prediction.html",
+    "href": "prediction.html",
+    "title": "Choice Prediction and Assortment Optimization using Random Forest Regressor",
+    "section": "",
+    "text": "import numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nfrom itertools import groupby, combinations\nfrom copy import deepcopy\nfrom math import *\nimport random\nimport ast\n\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.ensemble import RandomForestRegressor\nfrom sklearn.metrics import mean_squared_error, r2_score\n\nsns.set_theme(style=\"white\")"
+  },
+  {
+    "objectID": "prediction.html#labels",
+    "href": "prediction.html#labels",
+    "title": "Choice Prediction and Assortment Optimization using Random Forest Regressor",
+    "section": "Labels",
+    "text": "Labels\nThe choice probabilities provided in the probabilities.txt file are \\(n\\)-dimensional arrays with \\(n\\) discrete choice options. In order to simplify our model and reduce the amount of model training required, we reduced the dimension of the label space by splitting each array (choice probability distribution) into \\(n\\) distinct labels, each consisting of a single probability. This way, instead of predicting an array of probabilities, we are only predicting the choice probability of a single product.\n\\[\n\\begin{aligned}\n\\text{original array} & & \\text{labels} \\\\\n\\left[\\textcolor{red}{0.4}, \\textcolor{OliveGreen}{0.1}, \\textcolor{blue}{0.5}\\right] & \\longrightarrow & [\\textcolor{red}{0.4}] \\\\\n&& [\\textcolor{OliveGreen}{0.1}] \\\\\n&&[\\textcolor{blue}{0.5}]\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "prediction.html#features",
+    "href": "prediction.html#features",
+    "title": "Choice Prediction and Assortment Optimization using Random Forest Regressor",
+    "section": "Features",
+    "text": "Features\nEach assortment array is also split into \\(n\\) feature vectors as follows; for each product in an assortment:\n\nSet the product as the first feature \\(x_1\\)\n\n\\[\n\\begin{aligned}\n\\text{original array} & & \\text{feature vectors} \\\\\n\\left[\\textcolor{red}{0}, \\textcolor{OliveGreen}{5}, \\textcolor{blue}{9}\\right] & \\longrightarrow & [\\textcolor{red}{0} \\\\\n&& [\\textcolor{OliveGreen}{5}\\\\\n&& [\\textcolor{blue}{9}\n\\end{aligned}\n\\]\n\nEncode the information of the other products in the assortment using multi-hot-encoding, also known as multi-label-binarizing\n\nBecause each assortment has varying amounts of products, the multi-hot-encoding is used to standardize the length of the feature vectors.\nAs there is an outside option and thirty (30) different products, the multi-label-binarizer has a shape of (1,31). For example, an assortment \\([0,5,9]\\) can be represented as\n\\[\n\\begin{aligned}\n\\text{Assortment} \\quad & [\\textcolor{red}{0}, \\textcolor{OliveGreen}{5}, \\textcolor{blue}{9}]\\\\\n\\text{Multi-hot} \\quad & [\\textcolor{red}{1},0,0,0,0,\\textcolor{OliveGreen}{1},0,0,0,\\textcolor{blue}{1},0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]\n\\end{aligned}\n\\]\nHence, the final feature vectors are\n\\[\n\\begin{aligned}\n\\text{original array} &&  && \\text{feature vectors}\\\\\n[\\textcolor{red}{0}, \\textcolor{OliveGreen}{5}, \\textcolor{blue}{9}] && \\longrightarrow && [\\textcolor{red}{0},~ (0, 0, 0, 0, 0, \\textcolor{OliveGreen}{1}, 0, 0, 0, \\textcolor{blue}{1}, 0, ..., 0)]\\\\\n&&&& [\\textcolor{OliveGreen}{5}, ~(\\textcolor{red}{1}, 0, 0, 0, 0, 0, 0, 0, 0, \\textcolor{blue}{1}, 0, ..., 0)]\\\\\n&&&& [\\textcolor{blue}{9}, ~(\\textcolor{red}{1}, 0, 0, 0, 0, \\textcolor{OliveGreen}{1}, 0, 0, 0, 0, 0, ..., 0)]\n\\end{aligned}\n\\]\nAfter performing the transformations, we have a total of 8617 data points. The data points are finally split into separate training and testing sets. For the initial training, we will use the conventional 80-20 split and shuffle the datapoints to reduce the risk of overfitting.\n\nTEST_SIZE = 0.2    # Size of test set\nSHUFFLE = True     # Shuffle the datapoints\nRANDOM_STATE = 42  # For reproducibility"
+  },
+  {
+    "objectID": "prediction.html#setting-up-the-data",
+    "href": "prediction.html#setting-up-the-data",
+    "title": "Choice Prediction and Assortment Optimization using Random Forest Regressor",
+    "section": "Setting up the data",
+    "text": "Setting up the data\nFunctions used for the data transformation can be found at Appendix A.\nTransforming the data and splitting it into training and testing set\n\n# Splitting\nX_train_raw, X_test_raw, y_train_raw, y_test_raw = train_test_split(\n    assort, prob, test_size=TEST_SIZE, shuffle=SHUFFLE,\n    random_state=RANDOM_STATE\n)\n\n\n# Constructing the features and lables\nX_train, y_train = transform_data(X_train_raw, y_train_raw)\nX_test, y_test = transform_data(X_test_raw, y_test_raw)"
+  },
+  {
+    "objectID": "prediction.html#model-evaluation",
+    "href": "prediction.html#model-evaluation",
+    "title": "Choice Prediction and Assortment Optimization using Random Forest Regressor",
+    "section": "Model evaluation",
+    "text": "Model evaluation\nThe model’s predictive performance is assessed by calculating the mean-squared-error (MSE) of the predictions.\n\n# 1) Calculating the choice probabilities for the testing set\ny_preds = [ predict(assortment) for assortment in X_test_raw]\n    \n# 2) Calculating the mean MSE\nMSE_test = assortment_mse(y_preds, y_test_raw)\nprint(f\"The average MSE for an assortment is {np.mean(MSE_test) :.2f} %pp\")\nprint(f\"The median MSE for an assortment is {np.median(MSE_test) :.2f} %pp\")\n\nThe average MSE for an assortment is 1.46 %pp\nThe median MSE for an assortment is 0.51 %pp\n\n\n\n\n\n\n\nFigure 2: Assortments’ mean squared error (histogram). The source code can be found at Appendix C\n\n\n\n\nThe model performs well when tested on the testing set. The average MSE of the prediction for an assortment is under two percentage points. Furthermore, the median MSE is under one percentage point which indicates excellent prediction accuracy.\nAs seen from Figure 2, the long tail of the histogram is the cause of the average MSE being significantly worse than the median MSE.\nIn addition to the MSE, we can evaluate the popularity of the products by calculating the feature importance for the multi-hot encoded array. If a feature is important, its value has a significant effect on the prediction. In other words, the products with the highest corresponding importance are the most sought after as their presence in the assortment have a signicant impact on the choice probability of the other product.\nThe feature importance of the produts are shown in Figure 3. Based on the observations, the products \\(a\\), \\(e\\), and \\(f\\) are less popular, whereas the products \\(b\\), \\(c\\), and \\(d\\) are more popular.\n\nfeat_imp = pd.Series(reg.feature_importances_[2:])\nfeat_imp.set_axis(range(1,31), inplace=True)\nfeat_imp.plot(kind='barh')\nplt.show()\n\n\n\n\nFigure 3: Feature importances of the products. The outside option (\\(x_2^{(i)}\\)) is omitted."
+  },
+  {
+    "objectID": "pricing.html",
+    "href": "pricing.html",
+    "title": "Choice Prediction and Assortment Optimization using Random Forest Regressor",
+    "section": "",
+    "text": "import numpy as np\nimport pandas as pd\nimport matplotlib.pyplot as plt\nimport seaborn as sns\n\nfrom itertools import groupby, combinations\nfrom copy import deepcopy\nfrom math import *\nimport random\nimport ast\n\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.ensemble import RandomForestRegressor\nfrom sklearn.metrics import mean_squared_error, r2_score\n\nsns.set_theme(style=\"white\")"
+  },
+  {
+    "objectID": "pricing.html#labels",
+    "href": "pricing.html#labels",
+    "title": "Choice Prediction and Assortment Optimization using Random Forest Regressor",
+    "section": "Labels",
+    "text": "Labels\nThe choice probabilities provided in the probabilities.txt file are \\(n\\)-dimensional arrays with \\(n\\) discrete choice options. In order to simplify our model and reduce the amount of model training required, we reduced the dimension of the label space by splitting each array (choice probability distribution) into \\(n\\) distinct labels, each consisting of a single probability. This way, instead of predicting an array of probabilities, we are only predicting the choice probability of a single product.\n\\[\n\\begin{aligned}\n\\text{original array} & & \\text{labels} \\\\\n\\left[\\textcolor{red}{0.4}, \\textcolor{OliveGreen}{0.1}, \\textcolor{blue}{0.5}\\right] & \\longrightarrow & [\\textcolor{red}{0.4}] \\\\\n&& [\\textcolor{OliveGreen}{0.1}] \\\\\n&&[\\textcolor{blue}{0.5}]\n\\end{aligned}\n\\]"
+  },
+  {
+    "objectID": "pricing.html#features",
+    "href": "pricing.html#features",
+    "title": "Choice Prediction and Assortment Optimization using Random Forest Regressor",
+    "section": "Features",
+    "text": "Features\nEach assortment array is also split into \\(n\\) feature vectors as follows; for each product in an assortment:\n\nSet the product as the first feature \\(x_1\\)\n\n\\[\n\\begin{aligned}\n\\text{original array} & & \\text{feature vectors} \\\\\n\\left[\\textcolor{red}{0}, \\textcolor{OliveGreen}{5}, \\textcolor{blue}{9}\\right] & \\longrightarrow & [\\textcolor{red}{0} \\\\\n&& [\\textcolor{OliveGreen}{5}\\\\\n&& [\\textcolor{blue}{9}\n\\end{aligned}\n\\]\n\nEncode the information of the other products in the assortment using multi-hot-encoding, also known as multi-label-binarizing\n\nBecause each assortment has varying amounts of products, the multi-hot-encoding is used to standardize the length of the feature vectors.\nAs there is an outside option and thirty (30) different products, the multi-label-binarizer has a shape of (1,31). For example, an assortment \\([0,5,9]\\) can be represented as\n\\[\n\\begin{aligned}\n\\text{Assortment} \\quad & [\\textcolor{red}{0}, \\textcolor{OliveGreen}{5}, \\textcolor{blue}{9}]\\\\\n\\text{Multi-hot} \\quad & [\\textcolor{red}{1},0,0,0,0,\\textcolor{OliveGreen}{1},0,0,0,\\textcolor{blue}{1},0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]\n\\end{aligned}\n\\]\nHence, the final feature vectors are\n\\[\n\\begin{aligned}\n\\text{original array} &&  && \\text{feature vectors}\\\\\n[\\textcolor{red}{0}, \\textcolor{OliveGreen}{5}, \\textcolor{blue}{9}] && \\longrightarrow && [\\textcolor{red}{0},~ (0, 0, 0, 0, 0, \\textcolor{OliveGreen}{1}, 0, 0, 0, \\textcolor{blue}{1}, 0, ..., 0)]\\\\\n&&&& [\\textcolor{OliveGreen}{5}, ~(\\textcolor{red}{1}, 0, 0, 0, 0, 0, 0, 0, 0, \\textcolor{blue}{1}, 0, ..., 0)]\\\\\n&&&& [\\textcolor{blue}{9}, ~(\\textcolor{red}{1}, 0, 0, 0, 0, \\textcolor{OliveGreen}{1}, 0, 0, 0, 0, 0, ..., 0)]\n\\end{aligned}\n\\]\nAfter performing the transformations, we have a total of 8617 data points. The data points are finally split into separate training and testing sets. For the initial training, we will use the conventional 80-20 split and shuffle the datapoints to reduce the risk of overfitting."
+  },
+  {
     "objectID": "convolution.html",
     "href": "convolution.html",
     "title": "Kernel convolutions",

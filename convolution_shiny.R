@@ -1,6 +1,8 @@
 source("convolution_funcs.R")
 library(shiny)
+library(shinyFiles)
 library(jpeg)
+library(magick)
 
 
 plot_raster <- function(raster) {
@@ -28,9 +30,9 @@ ui <- fluidPage(
       h3("Upload an image"),
       
       # Input: Select a file ----
-      fileInput("img", "(supported filetypes: jpg or png)",
+      fileInput("img", "(supported filetype: jpg)",
                 multiple = FALSE,
-                accept = c(".jpg", ".jpeg")),
+                accept = c("image/jpeg")),
     
       # Horizontal line
       tags$hr(),
@@ -59,69 +61,55 @@ ui <- fluidPage(
       tags$hr(),
       
       actionButton("generate", "Convolve!")
-      
+  
       ),
       
     
     
     # MAIN PANEL ----
     mainPanel(
-      
       h2("Image output"),
-
-      imageOutput("imgoutput")
+      imageOutput("image_preview", width = "100px")
+    )
     
-      )
   )
 )
 
 # server.R ----
 server <- function(input, output, session) {
   
-  output$imgoutput <- renderImage({
-    
+  output$image_preview <- renderImage({
     req(input$img)
+    input_image <- input$img
     
-    # Reading the image
-    tryCatch(
-      {
-        img_path = input$img["datapath"] |> dplyr::pull()
-        img_type = input$img["type"]
-        
-        # Checks
-        grepl("jpeg", img_type) == TRUE
-        length(dim(img)) == 3
-        
-        img <- readJPEG(img_path, native = F)
-      },
-      error = function(e) {
-        # return a safeError if a parsing error occurs
-        stop(safeError(e))
+    rgb_matrix <- reactive({
+      if (is.null(input_image)) {
+        return(NULL)
       }
-    )
+      image <- image_read(input_image$datapath)
+      matrix <- image_data(image)
+      return(rgb_matrix)
+    })
+    
+    print(rgb_matrix)
+    print(dim(rgb_matrix))
     
     # Getting the matrix
-    observeEvent(input$generate, {
-
+    conv_mat <- reactive({
+      input <- input$generate
       conv_mat <- c(
         input$"11", input$"12", input$"13",
         input$"21", input$"22", input$"23",
         input$"31", input$"32", input$"33"
       ) |> matrix(ncol=3, nrow=3, byrow=T)
-  
-      print(conv_mat)
+      return(conv_mat)
     })
     
-    # Temp file for output
-    outfile <- tempfile(fileext='.jpg')
-    jpeg(img)
-    plot_raster(img)
-    dev.off()
+    print(conv_mat)
     
-    list(
-      src = outfile,
-      contentType = "image/jpeg"
-    )
+    
+    list(src = as.character(input_image$datapath),
+         contentType = input_image$type)
   
     }, deleteFile=T)
   
