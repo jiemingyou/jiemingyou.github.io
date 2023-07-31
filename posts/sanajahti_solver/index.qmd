@@ -1,0 +1,10 @@
+---
+title: "Sanajahti Solver"
+image: sanajahti.jpg
+date: "07-06-2022"
+author: Jieming You
+---
+
+Tool for brute-forcing "Sanajahti" game using depth-first search. Python and Flask.
+
+Github repo: https://github.com/jiemingyou/sanajahti-solver

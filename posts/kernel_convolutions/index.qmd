@@ -1,10 +1,16 @@
 ---
-title: "Kernel convolutions"
-date: October 10, 2022
+title: "Kernel convolutions from scratch"
+author:
+  - name: Jieming You
+date: 10-10-2022
 bibliography: references.bib
+categories: [R]
+code-block-bg: "#f0f5fb"
+image: blur.jpg
+
 ---
 
-Applying convolution matrices to rasters. Convolutions and matrices calculated using base `R`.
+Notebook for self-learning and playing with convolution matrices and applying them to raster inmages. All convolutions and matrices calculated and performed using base `R`.
 
 ```{r output=FALSE}
 library(jpeg)
@@ -17,7 +23,7 @@ Reading the image from a `jpg` file into a raster array. The image is loaded int
 
 ```{r}
 # Reading the sample image
-img <- readJPEG("assets/wall.jpg", native = FALSE)
+img <- readJPEG("wall.jpg", native = FALSE)
 dim(img)
 ```
 

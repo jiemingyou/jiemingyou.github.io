@@ -1,0 +1,13 @@
+---
+image: sahkonyt.png
+title: Native iOS electricity price monitoring app (Swift)
+author: Jieming You
+date: "2022-12-29"
+---
+
+Developed a native iOS application for tracking real-time electricity price.
+
+Coded entirely using Swift + SwiftUI, from fetching data from API to visualizing it on screen. 
+
+
+![](sahkonyt.png){fig-align="center"}

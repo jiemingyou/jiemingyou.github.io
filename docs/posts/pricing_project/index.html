@@ -10,9 +10,9 @@
 <meta name="author" content="Zechen Ma">
 <meta name="author" content="Ilkka Lappeteläinen">
 <meta name="author" content="Dennis Lo">
-<meta name="dcterms.date" content="2023-05-01">
+<meta name="dcterms.date" content="2023-04-12">
 
-<title>Jieming You - Choice Prediction and Assortment Optimization using Random Forest Regressor</title>
+<title>Jieming You - Assortment and Pricing Optimization using Random forest regressor</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -91,22 +91,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="site_libs/quarto-nav/headroom.min.js"></script>
-<script src="site_libs/clipboard/clipboard.min.js"></script>
-<script src="site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="site_libs/quarto-search/fuse.min.js"></script>
-<script src="site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="./">
-<script src="site_libs/quarto-html/quarto.js"></script>
-<script src="site_libs/quarto-html/popper.min.js"></script>
-<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="site_libs/quarto-html/anchor.min.js"></script>
-<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -141,7 +141,7 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -151,7 +151,7 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
     <nav class="navbar navbar-expand navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="./index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Jieming You</span>
     </a>
   </div>
@@ -204,9 +204,13 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Choice Prediction and Assortment Optimization using Random Forest Regressor</h1>
+<h1 class="title">Assortment and Pricing Optimization using Random forest regressor</h1>
 <p class="subtitle lead">IE4214 Pricing Analytics and Revenue Management Group Project (modified)</p>
-</div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Pricing</div>
+    <div class="quarto-category">Machine Learning</div>
+  </div>
+  </div>
 
 
 
@@ -225,7 +229,7 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
     <div>
     <div class="quarto-title-meta-heading">Published</div>
     <div class="quarto-title-meta-contents">
-      <p class="date">May 1, 2023</p>
+      <p class="date">April 12, 2023</p>
     </div>
   </div>
   
@@ -235,6 +239,11 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 
 </header>
 
+<p><br><br></p>
+<p>This course project introduces a method for modeling product choice probability within a product assortment using Random Forest Regressor.</p>
+<p>The IE4214 Revenue Management and Pricing Analytics course was taken in National Univesrity of Singapore, AY22/23.</p>
+<p>The full final report can be read here: <a href="https://drive.google.com/file/d/1TJy6UAHL0lkNo2O_R7ppQt_xYAkmA9Il/view?usp=sharing">Link</a></p>
+<p>Below is a slightly modified exceprt from the feature engineering chapter proposing a new way of creating features for assortment optimisation problems.</p>
 <div class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
@@ -443,7 +452,7 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 <div class="cell-output cell-output-display">
 <div id="fig-mse" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="prediction_files/figure-html/fig-mse-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/fig-mse-output-1.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;1: MSE and <span class="math inline">\(R^2\)</span> as a function of max depth parameter. The source code can be found at Appendix B</figcaption><p></p>
 </figure>
 </div>
@@ -483,7 +492,7 @@ The median MSE for an assortment is 0.51 %pp</code></pre>
 <div class="cell-output cell-output-display">
 <div id="fig-histogram" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="prediction_files/figure-html/fig-histogram-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/fig-histogram-output-1.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;2: Assortments’ mean squared error (histogram). The source code can be found at Appendix C</figcaption><p></p>
 </figure>
 </div>
@@ -501,7 +510,7 @@ The median MSE for an assortment is 0.51 %pp</code></pre>
 <div class="cell-output cell-output-display">
 <div id="fig-features" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="prediction_files/figure-html/fig-features-output-1.png" class="img-fluid figure-img"></p>
+<p><img src="index_files/figure-html/fig-features-output-1.png" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;3: Feature importances of the products. The outside option (<span class="math inline">\(x_2^{(i)}\)</span>) is omitted.</figcaption><p></p>
 </figure>
 </div>

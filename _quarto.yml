@@ -10,8 +10,8 @@ website:
 
   navbar:
     title: Jieming You
-    background: light
-    foreground: dark
+    #background: light
+    #foreground: dark
     collapse: false
     #left:
       #- text: Jieming You
@@ -31,9 +31,11 @@ website:
   
 format:
   html:
-    theme: cosmos
+    theme: morph
     css: styles.css
     toc: true
+    font: helvetica
+    fontcolor: "#485785"
 
 
 

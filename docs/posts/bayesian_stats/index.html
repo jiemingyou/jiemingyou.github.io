@@ -90,22 +90,22 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </style>
 
 
-<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
-<script src="../site_libs/quarto-nav/headroom.min.js"></script>
-<script src="../site_libs/clipboard/clipboard.min.js"></script>
-<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
-<script src="../site_libs/quarto-search/fuse.min.js"></script>
-<script src="../site_libs/quarto-search/quarto-search.js"></script>
-<meta name="quarto:offset" content="../">
-<script src="../site_libs/quarto-html/quarto.js"></script>
-<script src="../site_libs/quarto-html/popper.min.js"></script>
-<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
-<script src="../site_libs/quarto-html/anchor.min.js"></script>
-<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
-<link href="../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
-<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
-<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
-<link href="../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<script src="../../site_libs/quarto-html/quarto.js"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
 <script id="quarto-search-options" type="application/json">{
   "location": "navbar",
   "copy-button": false,
@@ -137,7 +137,7 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 
   <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
-<link rel="stylesheet" href="../styles.css">
+<link rel="stylesheet" href="../../styles.css">
 </head>
 
 <body class="nav-fixed">
@@ -147,7 +147,7 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
     <nav class="navbar navbar-expand navbar-dark ">
       <div class="navbar-container container-fluid">
       <div class="navbar-brand-container">
-    <a class="navbar-brand" href="../index.html">
+    <a class="navbar-brand" href="../../index.html">
     <span class="navbar-title">Jieming You</span>
     </a>
   </div>
@@ -207,7 +207,12 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
 <h1 class="title">Global Warming Rate Estimation using Linear Gaussian Model</h1>
-</div>
+  <div class="quarto-categories">
+    <div class="quarto-category">Bayesian Statistics</div>
+    <div class="quarto-category">Stan</div>
+    <div class="quarto-category">R</div>
+  </div>
+  </div>
 
 
 
@@ -235,6 +240,7 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 
 </header>
 
+<p>Project for course CS-E5710 Bayesian Data Analysis.</p>
 <section id="introduction" class="level2">
 <h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
 <p>There has been, and still is, a lot of controversy about the presence and magnitude of climate change. According to many studies, earth’s temperature has been steadily rising due to different factors, such as increased global emissions and deforestation. These studies propose differing values for the rate of the warming. Based on a report of IPCC, human-induced warming is likely increasing the average temperatures between 0.1°C and 0.3°C per decade.</p>
@@ -243,7 +249,7 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 <div class="cell-output-display">
 <div id="fig-temp" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="bayesian_files/figure-html/fig-temp-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/fig-temp-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;1: Monthly mean temperature</figcaption><p></p>
 </figure>
 </div>
@@ -653,7 +659,7 @@ y_i \sim  &amp;N(\alpha_i + \beta_i x_i,~\sigma_i) \\
 <div class="cell-output-display">
 <div id="fig-post_sep" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="bayesian_files/figure-html/fig-post_sep-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/fig-post_sep-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;2: Separate model posterior draws</figcaption><p></p>
 </figure>
 </div>
@@ -663,7 +669,7 @@ y_i \sim  &amp;N(\alpha_i + \beta_i x_i,~\sigma_i) \\
 <div class="cell-output-display">
 <div id="fig-post_pool" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="bayesian_files/figure-html/fig-post_pool-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/fig-post_pool-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;3: Pooled model posterior draws</figcaption><p></p>
 </figure>
 </div>
@@ -673,7 +679,7 @@ y_i \sim  &amp;N(\alpha_i + \beta_i x_i,~\sigma_i) \\
 <div class="cell-output-display">
 <div id="fig-post_hier" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="bayesian_files/figure-html/fig-post_hier-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/fig-post_hier-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;4: Hierarchical model posterior draws</figcaption><p></p>
 </figure>
 </div>
@@ -767,7 +773,7 @@ y_i \sim  &amp;N(\alpha_i + \beta_i x_i,~\sigma_i) \\
 <p>When using sensible priors, the model is not greatly affected by the prior choice as there are sufficient data points to reduce the prior’s effect on the posterior model.</p>
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="../assets/prior_sensitivity.jpg" class="img-fluid figure-img"></p>
+<p><img src="data/prior_sensitivity.jpg" class="img-fluid figure-img"></p>
 <p></p><figcaption class="figure-caption">Beta prior sensitivity to posterior distributions</figcaption><p></p>
 </figure>
 </div>
@@ -785,7 +791,7 @@ y_i \sim  &amp;N(\alpha_i + \beta_i x_i,~\sigma_i) \\
 <div class="cell-output-display">
 <div id="fig-final" class="quarto-figure quarto-figure-center anchored">
 <figure class="figure">
-<p><img src="bayesian_files/figure-html/fig-final-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/fig-final-1.png" class="img-fluid figure-img" width="672"></p>
 <p></p><figcaption class="figure-caption">Figure&nbsp;5: Predictive distribution sampled using hierarchical hyperpriors µ_0 and σ_0</figcaption><p></p>
 </figure>
 </div>

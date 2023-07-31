@@ -30,6 +30,8 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-search/fuse.min.js"></script>
 <script src="site_libs/quarto-search/quarto-search.js"></script>
 <meta name="quarto:offset" content="./">
+<script src="site_libs/quarto-listing/list.min.js"></script>
+<script src="site_libs/quarto-listing/quarto-listing.js"></script>
 <script src="site_libs/quarto-html/quarto.js"></script>
 <script src="site_libs/quarto-html/popper.min.js"></script>
 <script src="site_libs/quarto-html/tippy.umd.min.js"></script>
@@ -58,6 +60,35 @@ ul.task-list li input[type="checkbox"] {
     "search-submit-button-title": "Submit"
   }
 }</script>
+<script>
+
+  window.document.addEventListener("DOMContentLoaded", function (_event) {
+    const listingTargetEl = window.document.querySelector('#listing-sample-listings .list');
+    if (!listingTargetEl) {
+      // No listing discovered, do not attach.
+      return; 
+    }
+
+    const options = {
+      valueNames: ['listing-title','listing-author','listing-date','listing-image','listing-description',{ data: ['index'] },{ data: ['categories'] },{ data: ['listing-date-sort'] },{ data: ['listing-file-modified-sort'] }],
+      
+      searchColumns: ["listing-title","listing-author","listing-date","listing-image","listing-description"],
+    };
+
+    window['quarto-listings'] = window['quarto-listings'] || {};
+    window['quarto-listings']['listing-sample-listings'] = new List('listing-sample-listings', options);
+
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  });
+
+  window.addEventListener('hashchange',() => {
+    if (window['quarto-listing-loaded']) {
+      window['quarto-listing-loaded']();
+    }
+  })
+  </script>
 <script async="" src="https://www.googletagmanager.com/gtag/js?id=G-SG7MFM798X"></script>
 
 <script type="text/javascript">
@@ -68,6 +99,7 @@ gtag('js', new Date());
 gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 </script>
 
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
 
 <link rel="stylesheet" href="styles.css">
 </head>
@@ -116,37 +148,172 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 
 <div class="grid">
 <div class="profile-photo g-col-12 g-col-md-6">
-<p><img src="assets/profile.png" class="img-fluid"></p>
+<p><br> <img src="assets/profile.png" class="img-fluid"></p>
 </div>
-<section id="hi-there" class="level2 g-col-12 g-col-md-6">
-<h2 class="anchored" data-anchor-id="hi-there">Hi there! <span class="waving-hand">👋</span></h2>
-<p>I’m <span style="color: RoyalBlue;"><strong>Jieming You</strong></span>, an undergraduate IEM (Industrial Engineering and Management) student at Aalto University.</p>
-<p>This website is for archiving and documenting my personal projects mainly related to programming. You can find my photography work <a href="https://jieming.portfoliobox.net"><strong>here</strong></a>.</p>
+<section id="hi-there" class="level1 g-col-12 g-col-md-6">
+<h1>Hi there! <span class="waving-hand">👋</span></h1>
+<p>I’m <span style="color: RoyalBlue;"><strong>Jieming You</strong></span>, a Msc Machine Learning student at Aalto University with a bachelor’s degree in Industrial Engineering.</p>
+<p>This website is for archiving and documenting my personal projects and posts mainly related to maths and programming. You can find my photography work <a href="https://jieming.portfoliobox.net"><strong>here</strong></a>.</p>
 </section>
 </div>
-<section id="latest-projects" class="level1 centertitle">
-<h1 class="centertitle">Latest projects</h1>
-<div class="grid">
-<section id="choice-prediction-model" class="level3 project g-col-12 g-col-md-6" onclick="location.href='https://jieming.me/prediction.html'" onmouseover="" style="cursor: pointer;">
-<h3 class="anchored" data-anchor-id="choice-prediction-model">Choice Prediction Model</h3>
-<p>Proposing a method for modeling product choice probability within a product assortment using Random Forest Regressor.</p>
-</section>
-<section id="sähkö-nyt" class="level3 project g-col-12 g-col-md-6" onclick="location.href='https://jieming.me/sahkonyt.html'" onmouseover="" style="cursor: pointer;">
-<h3 class="anchored" data-anchor-id="sähkö-nyt">Sähkö Nyt</h3>
-<p>Electricity price monitoring app for iOS developed using <code>Swift</code> and <code>SwiftUI</code>. Launching early 2023.</p>
-</section>
-<section id="sanajahti-solver" class="level3 project g-col-12 g-col-md-6" onclick="location.href='https://1gd7kf.deta.dev'" onmouseover="" style="cursor: pointer;">
-<h3 class="anchored" data-anchor-id="sanajahti-solver">Sanajahti Solver</h3>
-<p>Depth-first search algorithm implementation using <code>Python</code> for solving Sanajahti-game. Web-app built using <code>Flask</code>.</p>
-</section>
-<section id="global-warming-analysis" class="level3 project g-col-12 g-col-md-6" onclick="location.href='https://jieming.me/bayesian/bayesian.html'" onmouseover="" style="cursor: pointer;">
-<h3 class="anchored" data-anchor-id="global-warming-analysis">Global Warming analysis</h3>
-<p>Bayesian stats project analysing the global warming trend using gaussian regressions. Markov Chain Monte Carlo simulations done in <code>R</code> and <a href="https://mc-stan.org"><code>Stan</code></a>.</p>
-</section>
-<section id="kernel-convolutions" class="level3 project g-col-12 g-col-md-6" onclick="location.href='https://jieming.me/convolution.html'" onmouseover="" style="cursor: pointer;">
-<h3 class="anchored" data-anchor-id="kernel-convolutions">Kernel Convolutions</h3>
-<p>Testing kernel convolutions, edge extensions, and calculating a simple gaussian kernel using base <code>R</code>.</p>
-</section>
+<section id="latest-posts" class="level1 centertitle">
+<h1 class="centertitle">Latest posts</h1>
+<div id="listing-sample-listings" class="quarto-listing quarto-listing-container-grid">
+<div class="list grid quarto-listing-cols-3">
+<div class="g-col-1" data-index="0" data-categories="Riddle,Math" data-listing-date-sort="1690405200000" data-listing-file-modified-sort="1690739782028" data-listing-reading-time-sort="11.415">
+<a href="./posts/hat_puzzle/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/hat_puzzle/hats.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title" data-anchor-id="latest-posts">
+Prisoners and Hats
+</h5>
+<div class="card-text listing-description">
+I came across on a fun riddle with interesting analogues in mathematics.
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Jieming You
+</div>
+<div class="listing-date">
+Jul 27, 2023
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="1" data-categories="Pricing,Machine Learning" data-listing-date-sort="1681246800000" data-listing-file-modified-sort="1690702138474" data-listing-reading-time-sort="5.66">
+<a href="./posts/pricing_project/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/pricing_project/pb.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Assortment and Pricing Optimization using Random forest regressor
+</h5>
+<div class="card-text listing-description">
+<br><br>
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Jieming You, Zechen Ma, Ilkka Lappeteläinen, Dennis Lo
+</div>
+<div class="listing-date">
+Apr 12, 2023
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="2" data-listing-date-sort="1672264800000" data-listing-file-modified-sort="1690829495933" data-listing-reading-time-sort="0.13">
+<a href="./posts/sahko_nyt/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/sahko_nyt/sahkonyt.png" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Native iOS electricity price monitoring app (Swift)
+</h5>
+<div class="card-text listing-description">
+Developed a native iOS application for tracking real-time electricity price.
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Jieming You
+</div>
+<div class="listing-date">
+Dec 29, 2022
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="3" data-categories="Bayesian Statistics,Stan,R" data-listing-date-sort="1668204000000" data-listing-file-modified-sort="1690739897000" data-listing-reading-time-sort="16.935">
+<a href="./posts/bayesian_stats/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/bayesian_stats/data/prior_sensitivity.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Global Warming Rate Estimation using Linear Gaussian Model
+</h5>
+<div class="card-text listing-description">
+Project for course CS-E5710 Bayesian Data Analysis.
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Aake Kesälä, Zechen Ma, Jieming You
+</div>
+<div class="listing-date">
+Nov 12, 2022
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="4" data-categories="R" data-listing-date-sort="1665349200000" data-listing-file-modified-sort="1690739431600" data-listing-reading-time-sort="5.175">
+<a href="./posts/kernel_convolutions/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/kernel_convolutions/blur.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Kernel convolutions from scratch
+</h5>
+<div class="card-text listing-description">
+Notebook for self-learning and playing with convolution matrices and applying them to raster inmages. All convolutions and matrices calculated and performed using base <code>R</code>.
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Jieming You
+</div>
+<div class="listing-date">
+Oct 10, 2022
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+<div class="g-col-1" data-index="5" data-listing-date-sort="1657054800000" data-listing-file-modified-sort="1690829470794" data-listing-reading-time-sort="0.065">
+<a href="./posts/sanajahti_solver/index.html" class="quarto-grid-link">
+<div class="quarto-grid-item card h-100 card-left">
+<p class="card-img-top">
+<img src="./posts/sanajahti_solver/sanajahti.jpg" class="thumbnail-image card-img" style="height: 150px;">
+</p>
+<div class="card-body post-contents">
+<h5 class="no-anchor card-title listing-title">
+Sanajahti Solver
+</h5>
+<div class="card-text listing-description">
+Tool for brute-forcing “Sanajahti” game using depth-first search. Python and Flask.
+</div>
+<div class="card-attribution card-text-small justify">
+<div class="listing-author">
+Jieming You
+</div>
+<div class="listing-date">
+Jul 6, 2022
+</div>
+</div>
+</div>
+</div>
+</a>
+</div>
+</div>
+<div class="listing-no-matching d-none">
+No matching items
+</div>
 </div>
 </section>
 <section id="university-projects" class="level1 centertitle">
@@ -208,15 +375,16 @@ gtag('config', 'G-SG7MFM798X', { 'anonymize_ip': true});
 <section id="other-stuff" class="level1 centertitle">
 <h1 class="centertitle">Other stuff</h1>
 <div class="grid">
-<section id="deep-dive-case-competition-1st-place" class="level4 project g-col-12 g-col-md-6" onclick="location.href='https://deep-dive-8f0636.webflow.io'" onmouseover="" style="cursor: pointer;">
-<h4 class="anchored" data-anchor-id="deep-dive-case-competition-1st-place">Deep Dive Case competition <br> 🏆 <span style="color: RoyalBlue;">1st place</span></h4>
+<section id="deep-dive-case-competition-1st-place" class="level3 project g-col-12 g-col-md-6" onclick="location.href='https://deep-dive-8f0636.webflow.io'" onmouseover="" style="cursor: pointer;">
+<h3 class="anchored" data-anchor-id="deep-dive-case-competition-1st-place"><strong>Deep Dive Case competition</strong> <br> 🏆 <span style="color: RoyalBlue;"><strong>1st place</strong></span></h3>
 <p>Deep tech Research-to-Business (R2B) case competition.</p>
 </section>
-<section id="optiver-traderhack-hackathon-finalist" class="level4 project g-col-12 g-col-md-6" onclick="location.href='https://optiver.com/competitions/traderhack2022/'" onmouseover="" style="cursor: pointer;">
-<h4 class="anchored" data-anchor-id="optiver-traderhack-hackathon-finalist">Optiver TraderHack Hackathon <br> <span style="color: RoyalBlue;">finalist</span></h4>
+<section id="optiver-traderhack-hackathon-finalist" class="level3 project g-col-12 g-col-md-6" onclick="location.href='https://optiver.com/competitions/traderhack2022/'" onmouseover="" style="cursor: pointer;">
+<h3 class="anchored" data-anchor-id="optiver-traderhack-hackathon-finalist"><strong>Optiver TraderHack Hackathon</strong> <br> <span style="color: RoyalBlue;"><strong>Finalist</strong></span></h3>
 <p>Algorithmic trading competition (Cross-Exchange Market Making).</p>
 </section>
 </div>
+
 
 
 </section>

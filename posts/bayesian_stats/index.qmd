@@ -1,6 +1,7 @@
 ---
 title: "Global Warming Rate Estimation using Linear Gaussian Model"
 date: 11/12/2022
+categories: [Bayesian Statistics, Stan, R]
 author:   
   - Aake Kesälä   
   - Zechen Ma
@@ -11,8 +12,11 @@ format:
     grid:
       margin-width: 350px
       sidebar-width: 200px
-
+      
+code-block-bg: "#f0f5fb"
 ---
+
+Project for course CS-E5710 Bayesian Data Analysis.
 
 ## Introduction
 
@@ -36,7 +40,7 @@ library(cmdstanr)
 
 
 theme_set(theme_minimal())
-setwd("/Users/jieming/coding/jiemingyou.github.io/")
+setwd("/Users/jieming/coding/jiemingyou.github.io/posts/bayesian_stats")
 
 temp_data <- read.csv("data/temp_monthly.csv")
 
@@ -327,7 +331,7 @@ Since the separate and hierarchical have different variables for each city, we o
 ```{r}
 #| echo: false
 #| warning: false
-setwd("/Users/jieming/coding/jiemingyou.github.io/")
+setwd("/Users/jieming/coding/jiemingyou.github.io/posts/bayesian_stats")
 fit_sep <- readRDS("data/fit_sep.rds")
 fit_pool <- readRDS("data/fit_pool.rds")
 fit_hier <- readRDS("data/fit_hier.rds")
@@ -505,7 +509,7 @@ All models have k-values less than 0.5. Hence, the obtained elpd values can be c
 
 When using sensible priors, the model is not greatly affected by the prior choice as there are sufficient data points to reduce the prior’s effect on the posterior model.
 
-![Beta prior sensitivity to posterior distributions](../assets/prior_sensitivity.jpg)
+![Beta prior sensitivity to posterior distributions](data/prior_sensitivity.jpg)
 
 ## Discussion
 

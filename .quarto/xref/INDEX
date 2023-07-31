@@ -26,5 +26,26 @@
   "prediction.ipynb": {
     "prediction.html": "09f70f5e",
     "prediction.tex": "bbf6e822"
+  },
+  "posts/hat_puzzle/index.qmd": {
+    "index.html": "3ef16c15"
+  },
+  "posts/bayesian_stats/index.qmd": {
+    "index.html": "3b57dee5"
+  },
+  "posts/pricing_project/index.qmd": {
+    "index.html": "9ff8b3cc"
+  },
+  "posts/pricing_project/index.ipynb": {
+    "index.html": "0643f507"
+  },
+  "posts/kernel_convolutions/index.qmd": {
+    "index.html": "7bad2c4b"
+  },
+  "posts/sahko_nyt/index.qmd": {
+    "index.html": "d462c48c"
+  },
+  "posts/sanajahti_solver/index.qmd": {
+    "index.html": "054869c1"
   }
 }

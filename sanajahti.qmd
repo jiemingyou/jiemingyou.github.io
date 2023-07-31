@@ -1,5 +1,0 @@
----
-title: "Sanajahti Solver"
----
-
-Site work in progress...

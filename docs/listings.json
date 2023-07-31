@@ -1,0 +1,13 @@
+[
+  {
+    "listing": "/index.html",
+    "items": [
+      "/posts/hat_puzzle/index.html",
+      "/posts/pricing_project/index.html",
+      "/posts/sahko_nyt/index.html",
+      "/posts/bayesian_stats/index.html",
+      "/posts/kernel_convolutions/index.html",
+      "/posts/sanajahti_solver/index.html"
+    ]
+  }
+]
