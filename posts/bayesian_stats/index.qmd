@@ -14,6 +14,7 @@ format:
       sidebar-width: 200px
       
 code-block-bg: "#f0f5fb"
+image: posterior.jpg
 ---
 
 Project for course CS-E5710 Bayesian Data Analysis.
